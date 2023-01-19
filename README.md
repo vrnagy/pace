@@ -1,5 +1,24 @@
 ![title](/static/readme.png)
 
+### Prerequisites
+
+- [Node.js 18](https://nodejs.org/en/)
+- [Rust Stable](https://www.rust-lang.org/tools/install)
+
+### Installation
+
+Install yarn:
+
+```bash
+$ npm install yarn --global
+```
+
+Install dependencies:
+
+```bash
+$ yarn install
+```
+
 ### Development
 
 - Use [karma commit format](http://karma-runner.github.io/0.10/dev/git-commit-msg.html)
