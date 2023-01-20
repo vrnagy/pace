@@ -3,7 +3,7 @@ mod tests {
     use std::rc::Rc;
 
     use crate::{
-        components::{
+        base::{
             component_context::ComponentContext, execution_context::ExecutionContext,
             implicit::recursive::recursive_batch_validator::RecursiveBatchValidator,
             utils::testing::ComponentTestSnapshot,

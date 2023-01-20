@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::components::{
+    use crate::base::{
         component_context::ComponentContext,
         implicit::recursive::recursive_sma::RecursiveSMA,
         utils::testing::{load_test_artifact_with_target, ComponentTestSnapshot},

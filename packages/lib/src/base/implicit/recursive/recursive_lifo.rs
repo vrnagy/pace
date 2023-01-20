@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 
-use crate::components::component_context::ComponentContext;
+use crate::base::component_context::ComponentContext;
 
 pub struct RecursiveLIFO {
     ctx: ComponentContext,

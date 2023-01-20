@@ -1,4 +1,4 @@
-use crate::components::{
+use crate::base::{
     component_context::ComponentContext, implicit::recursive::recursive_lifo::RecursiveLIFO,
 };
 

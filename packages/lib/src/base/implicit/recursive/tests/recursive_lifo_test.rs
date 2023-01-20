@@ -3,7 +3,7 @@ mod tests {
     use std::rc::Rc;
 
     use crate::{
-        components::{
+        base::{
             component_context::ComponentContext, execution_context::ExecutionContext,
             implicit::recursive::recursive_lifo::RecursiveLIFO,
             utils::testing::ComponentTestSnapshot,

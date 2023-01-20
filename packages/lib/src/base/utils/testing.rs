@@ -4,7 +4,7 @@ use colored::Colorize;
 use polars::prelude::DataFrame;
 
 use crate::{
-    components::component_context::ComponentContext,
+    base::component_context::ComponentContext,
     data::{
         types::Timeframe,
         utils::{read_csv, SeriesUtils},
