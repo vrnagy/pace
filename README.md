@@ -25,6 +25,8 @@ $ yarn install
 
 ### Architecture
 
+- TODO
+
 ### Bookmarks
 
 - https://github.com/nardew/talipp/
@@ -36,3 +38,7 @@ $ yarn install
 - https://wax-ml.readthedocs.io/en/latest/notebooks/01_demo_EWMA.html
 - https://medium.com/rapids-ai/gquant-gpu-accelerated-examples-for-quantitative-analyst-tasks-8b6de44c0ac2
 - https://docs.google.com/spreadsheets/d/1tmSITybYonnhhCjnud0K9Gn-Bc6PDaX7/edit?usp=sharing&ouid=106506202012972263139&rtpof=true&sd=true
+- https://nnethercote.github.io/2022/10/27/how-to-speed-up-the-rust-compiler-in-october-2022.html
+- https://nnethercote.github.io/2022/07/20/how-to-speed-up-the-rust-compiler-in-july-2022.html
+- https://nnethercote.github.io/perf-book/build-configuration.html#link-time-optimization
+- https://www.reddit.com/r/rust/comments/yecr1v/how_to_speed_up_the_rust_compiler_in_october_2022/
