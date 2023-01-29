@@ -1,4 +1,5 @@
 pub mod aroon;
+pub mod awesome_oscillator;
 pub mod bars;
 pub mod cross;
 pub mod moving_average;

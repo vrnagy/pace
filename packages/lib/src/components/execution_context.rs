@@ -1,6 +1,6 @@
 use std::{rc::Rc, time::Duration};
 
-use crate::asset::asset_data_provider::AssetDataProvider;
+use crate::{asset::asset_data_provider::AssetDataProvider, ta::moving_average::ma::MovingAverage};
 
 pub struct ExecutionContext {
     pub asset_data_provider: Rc<dyn AssetDataProvider + 'static>,
@@ -72,6 +72,15 @@ impl ExecutionContext {
 
     pub fn time(&self) -> Option<Duration> {
         return self.asset_data_provider.get_time(self.current_tick);
+    }
+
+    pub fn hl2(&self) -> Option<f64> {
+        let high = self.high();
+        let low = self.low();
+        match (high, low) {
+            (Some(high), Some(low)) => return Some(MovingAverage::hl2(high, low)),
+            _ => return None,
+        }
     }
 
     pub fn opens(&self) -> &[Option<f64>] {
