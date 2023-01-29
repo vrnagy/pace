@@ -3,6 +3,7 @@ pub mod awesome_oscillator;
 pub mod balance_of_power;
 pub mod bars;
 pub mod bollinger_bands;
+pub mod chaikin_money_flow;
 pub mod cross;
 pub mod moving_average;
 pub mod relative_strength_index;
