@@ -10,28 +10,28 @@ use crate::{
     },
 };
 
-pub struct BollingerBandsPercentBIndicatorConfig {
+pub struct BollingerBandsWidthIndicatorConfig {
     pub length: usize,
     pub source: Source,
     pub mult: f64,
 }
 
-pub struct BollingerBandsPercentBIndicatorResult {
+pub struct BollingerBandsWidthIndicatorResult {
     pub value: Option<f64>,
 }
 
-pub struct BollingerBandsPercentBIndicator {
-    pub config: BollingerBandsPercentBIndicatorConfig,
+pub struct BollingerBandsWidthIndicator {
+    pub config: BollingerBandsWidthIndicatorConfig,
     ctx: ComponentContext,
     basis: SimpleMovingAverageComponent,
     stdev: StandardDeviationComponent,
 }
 
-pub static BOLLINGER_BANDS_PERCENT_B_MULT: f64 = 2.0;
+pub static BOLLINGER_BANDS_WIDTH_MULT: f64 = 2.0;
 
-impl BollingerBandsPercentBIndicator {
-    pub fn new(ctx: ComponentContext, config: BollingerBandsPercentBIndicatorConfig) -> Self {
-        return BollingerBandsPercentBIndicator {
+impl BollingerBandsWidthIndicator {
+    pub fn new(ctx: ComponentContext, config: BollingerBandsWidthIndicatorConfig) -> Self {
+        return BollingerBandsWidthIndicator {
             ctx: ctx.clone(),
             basis: SimpleMovingAverageComponent::new(ctx.clone(), config.length),
             stdev: StandardDeviationComponent::new(ctx.clone(), config.length, true),
@@ -39,7 +39,7 @@ impl BollingerBandsPercentBIndicator {
         };
     }
 
-    pub fn next(&mut self) -> BollingerBandsPercentBIndicatorResult {
+    pub fn next(&mut self) -> BollingerBandsWidthIndicatorResult {
         self.ctx.assert();
 
         let ctx = self.ctx.get();
@@ -49,22 +49,21 @@ impl BollingerBandsPercentBIndicator {
         let dev = self.stdev.next(src);
 
         if src.is_none() || basis.is_none() || dev.is_none() {
-            return BollingerBandsPercentBIndicatorResult { value: None };
+            return BollingerBandsWidthIndicatorResult { value: None };
+        }
+
+        let basis = basis.unwrap();
+
+        if basis == 0.0 {
+            return BollingerBandsWidthIndicatorResult { value: None };
         }
 
         let src = src.unwrap();
-        let basis = basis.unwrap();
         let dev = dev.unwrap() * self.config.mult;
         let upper = basis + dev;
         let lower = basis - dev;
-        let upper_lower_diff = upper - lower;
+        let bbw = (upper - lower) / basis;
 
-        if upper_lower_diff == 0.0 {
-            return BollingerBandsPercentBIndicatorResult { value: None };
-        }
-
-        let bbr = (src - lower) / upper_lower_diff;
-
-        return BollingerBandsPercentBIndicatorResult { value: Some(bbr) };
+        return BollingerBandsWidthIndicatorResult { value: Some(bbw) };
     }
 }

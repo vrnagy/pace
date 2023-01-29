@@ -13,8 +13,13 @@ mod tests {
                 AwesomeOscillatorIndicator, AwesomeOscillatorIndicatorConfig,
             },
             balance_of_power::balance_of_power_indicator::BalanceOfPowerIndicator,
-            bollinger_bands::bollinger_bands_pb_indicator::{
-                BollingerBandsPercentBIndicator, BollingerBandsPercentBIndicatorConfig,
+            bollinger_bands::{
+                bollinger_bands_pb_indicator::{
+                    BollingerBandsPercentBIndicator, BollingerBandsPercentBIndicatorConfig,
+                },
+                bollinger_bands_width_indicator::{
+                    BollingerBandsWidthIndicator, BollingerBandsWidthIndicatorConfig,
+                },
             },
             moving_average::ma::MovingAverageKind,
         },
@@ -23,7 +28,7 @@ mod tests {
 
     fn _test(
         cctx: &mut ComponentContext,
-        target: &mut BollingerBandsPercentBIndicator,
+        target: &mut BollingerBandsWidthIndicator,
         expected: &[Option<f64>],
     ) {
         let mut snapshot = ComponentTestSnapshot::<f64>::new();
@@ -35,15 +40,15 @@ mod tests {
     }
 
     #[test]
-    fn test_bollinger_bands_percent_b_indicator_btc_1d() {
+    fn test_bollinger_bands_width_indicator_btc_1d() {
         let (_df, ctx, expected) = Fixture::load(
-            "ta/bollinger_bands/tests/fixtures/bbp/indicator/btc_1d_length_20_sma_mult_2_close.csv",
+            "ta/bollinger_bands/tests/fixtures/bbw/indicator/btc_1d_length_20_sma_mult_2_close.csv",
         );
         _test(
             &mut ctx.clone(),
-            &mut BollingerBandsPercentBIndicator::new(
+            &mut BollingerBandsWidthIndicator::new(
                 ctx.clone(),
-                BollingerBandsPercentBIndicatorConfig {
+                BollingerBandsWidthIndicatorConfig {
                     length: 20,
                     mult: 2.0,
                     source: Source::from_kind(ctx.clone(), SourceKind::Close),
