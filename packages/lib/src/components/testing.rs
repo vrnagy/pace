@@ -172,29 +172,3 @@ impl ComponentTestSnapshot<(Option<f64>, Option<f64>, Option<f64>, Option<f64>)>
         })
     }
 }
-
-pub fn get_test_artifact_path(path: &str) -> PathBuf {
-    return Path::new("../../artifacts/tests").join(path);
-}
-
-pub fn load_test_artifact(path: &str) -> (DataFrame, ComponentContext) {
-    let df = read_csv(&get_test_artifact_path(path));
-    let ctx = ComponentContext::build_from_df(&df, "TEST", Timeframe::OneDay);
-    return (df, ctx);
-}
-
-pub fn load_test_artifact_with_target(
-    path: &str,
-) -> (DataFrame, ComponentContext, Vec<Option<f64>>) {
-    let (df, ctx) = load_test_artifact(path);
-    let values = df.column("_target_").unwrap().to_f64();
-    return (df, ctx, values);
-}
-
-pub fn load_test_strategy_artifact_with_target(
-    path: &str,
-) -> (DataFrame, ComponentContext, Vec<Option<StrategyActionKind>>) {
-    let (df, ctx) = load_test_artifact(path);
-    let values = df.column("_target_").unwrap().to_strategy_action();
-    return (df, ctx, values);
-}

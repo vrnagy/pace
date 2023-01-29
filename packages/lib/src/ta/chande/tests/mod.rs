@@ -1,1 +1,1 @@
-mod chande_kroll_stop_indicator;
+mod chande_kroll_stop_indicator_test;
