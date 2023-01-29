@@ -142,6 +142,37 @@ impl ComponentTestSnapshot<(Option<f64>, Option<f64>)> {
     }
 }
 
+impl ComponentTestSnapshot<(Option<f64>, Option<f64>, Option<f64>, Option<f64>)> {
+    pub fn assert(
+        &self,
+        expected: &[Option<(Option<f64>, Option<f64>, Option<f64>, Option<f64>)>],
+    ) {
+        self.assert_iter(expected, |actual, expected| {
+            let is_first_valid = match (actual.0, expected.0) {
+                (None, None) => true,
+                (Some(_actual), Some(_expected)) => _actual.compare(_expected),
+                _ => false,
+            };
+            let is_second_valid = match (actual.1, expected.1) {
+                (None, None) => true,
+                (Some(_actual), Some(_expected)) => _actual.compare(_expected),
+                _ => false,
+            };
+            let is_third_valid = match (actual.2, expected.2) {
+                (None, None) => true,
+                (Some(_actual), Some(_expected)) => _actual.compare(_expected),
+                _ => false,
+            };
+            let is_fourth_valid = match (actual.3, expected.3) {
+                (None, None) => true,
+                (Some(_actual), Some(_expected)) => _actual.compare(_expected),
+                _ => false,
+            };
+            return is_first_valid && is_second_valid && is_third_valid && is_fourth_valid;
+        })
+    }
+}
+
 pub fn get_test_artifact_path(path: &str) -> PathBuf {
     return Path::new("../../artifacts/tests").join(path);
 }

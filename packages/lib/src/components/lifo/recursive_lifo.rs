@@ -25,6 +25,11 @@ impl RecursiveLIFO {
         return self.values.get(index).unwrap();
     }
 
+    pub fn values(&mut self) -> &[Option<f64>] {
+        self.values.make_contiguous();
+        return self.values.as_slices().0;
+    }
+
     pub fn next(&mut self, value: Option<f64>) -> (Option<f64>, Option<f64>, bool) {
         self.ctx.assert();
         let mut first_value: Option<f64> = None;

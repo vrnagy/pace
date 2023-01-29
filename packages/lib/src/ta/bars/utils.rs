@@ -13,12 +13,12 @@ impl BarUtils {
         return Some(-(length.abs_diff(index).abs_diff(1) as i32));
     }
 
-    pub fn highest(series: &[Option<f64>], length: usize) -> Option<f64> {
+    pub fn highest(series: &[Option<f64>]) -> Option<f64> {
         let index = find_max_index(series);
         return series[index];
     }
 
-    pub fn lowest(series: &[Option<f64>], length: usize) -> Option<f64> {
+    pub fn lowest(series: &[Option<f64>]) -> Option<f64> {
         let index = find_min_index(series);
         return series[index];
     }

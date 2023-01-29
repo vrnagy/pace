@@ -4,6 +4,7 @@ pub mod balance_of_power;
 pub mod bars;
 pub mod bollinger;
 pub mod chaikin;
+pub mod chande;
 pub mod cross;
 pub mod moving_average;
 pub mod relative_strength_index;

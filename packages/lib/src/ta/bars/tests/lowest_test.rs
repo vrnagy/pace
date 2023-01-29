@@ -16,7 +16,7 @@ mod tests {
                 snapshot.push(None);
                 continue;
             }
-            let output = BarUtils::lowest(ctx.prev_lows(length), length);
+            let output = BarUtils::lowest(ctx.prev_lows(length));
             snapshot.push(output);
         }
         snapshot.assert(expected);
