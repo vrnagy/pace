@@ -13,8 +13,8 @@ mod tests {
                 AwesomeOscillatorIndicator, AwesomeOscillatorIndicatorConfig,
             },
             balance_of_power::balance_of_power_indicator::BalanceOfPowerIndicator,
-            chaikin_money_flow::chaikin_money_flow_indicator::{
-                ChaikinMoneyFlowIndicator, ChaikinMoneyFlowIndicatorConfig,
+            bollinger::bollinger_bands_pb_indicator::{
+                BollingerBandsPercentBIndicator, BollingerBandsPercentBIndicatorConfig,
             },
             moving_average::ma::MovingAverageKind,
         },
@@ -23,7 +23,7 @@ mod tests {
 
     fn _test(
         cctx: &mut ComponentContext,
-        target: &mut ChaikinMoneyFlowIndicator,
+        target: &mut BollingerBandsPercentBIndicator,
         expected: &[Option<f64>],
     ) {
         let mut snapshot = ComponentTestSnapshot::<f64>::new();
@@ -35,14 +35,19 @@ mod tests {
     }
 
     #[test]
-    fn test_chaikin_money_flow_14_length_btc_1d() {
-        let (_df, ctx, expected) =
-            Fixture::load("ta/chaikin_money_flow/tests/fixtures/indicator/btc_1d_14_length.csv");
+    fn test_bollinger_bands_percent_b_indicator_btc_1d() {
+        let (_df, ctx, expected) = Fixture::load(
+            "ta/bollinger/tests/fixtures/bbp/indicator/btc_1d_length_20_sma_mult_2_close.csv",
+        );
         _test(
             &mut ctx.clone(),
-            &mut ChaikinMoneyFlowIndicator::new(
+            &mut BollingerBandsPercentBIndicator::new(
                 ctx.clone(),
-                ChaikinMoneyFlowIndicatorConfig { length: 14 },
+                BollingerBandsPercentBIndicatorConfig {
+                    length: 20,
+                    mult: 2.0,
+                    source: Source::from_kind(ctx.clone(), SourceKind::Close),
+                },
             ),
             &expected,
         );
