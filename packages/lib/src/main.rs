@@ -5,6 +5,7 @@
     clippy::too_many_arguments,
     clippy::uninlined_format_args,
     clippy::module_inception,
+    clippy::upper_case_acronyms,
     unused
 )]
 
