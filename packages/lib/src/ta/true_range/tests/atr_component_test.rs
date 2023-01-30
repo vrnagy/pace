@@ -29,4 +29,26 @@ mod tests {
             &expected,
         );
     }
+
+    #[test]
+    fn test_atr_btc_1d_length_1() {
+        let (_df, ctx, expected) =
+            Fixture::load("ta/true_range/tests/fixtures/atr/btc_1d_length_1.csv");
+        _test(
+            &mut ctx.clone(),
+            &mut AverageTrueRangeComponent::new(ctx.clone(), 1),
+            &expected,
+        );
+    }
+
+    #[test]
+    fn test_atr_btc_1d_length_2() {
+        let (_df, ctx, expected) =
+            Fixture::load("ta/true_range/tests/fixtures/atr/btc_1d_length_2.csv");
+        _test(
+            &mut ctx.clone(),
+            &mut AverageTrueRangeComponent::new(ctx.clone(), 2),
+            &expected,
+        );
+    }
 }

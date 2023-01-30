@@ -23,7 +23,7 @@ impl ExponentialMovingAverageComponent {
     }
 
     pub fn with_alpha(ctx: ComponentContext, length: usize, alpha: f64) -> Self {
-        assert!(length > 1, "RecursiveEMA must have a length larger than 1");
+        assert!(length > 0, "RecursiveEMA must have a length larger than 0");
         return ExponentialMovingAverageComponent {
             length,
             alpha,
@@ -36,6 +36,9 @@ impl ExponentialMovingAverageComponent {
 
     pub fn next(&mut self, value: Option<f64>) -> Option<f64> {
         self.ctx.assert();
+        if self.length == 1 {
+            return value;
+        }
         let current_index = self.position.next();
         if current_index < self.length - 1 {
             self.sma.next(value);

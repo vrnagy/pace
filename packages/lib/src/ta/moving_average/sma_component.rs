@@ -14,7 +14,7 @@ pub struct SimpleMovingAverageComponent {
 
 impl SimpleMovingAverageComponent {
     pub fn new(ctx: ComponentContext, length: usize) -> Self {
-        assert!(length > 1, "RecursiveSMA must have a length larger than 1");
+        assert!(length > 0, "RecursiveSMA must have a length larger than 0");
         return SimpleMovingAverageComponent {
             length,
             ctx: ctx.clone(),
@@ -27,6 +27,9 @@ impl SimpleMovingAverageComponent {
 
     pub fn next(&mut self, value: Option<f64>) -> Option<f64> {
         self.ctx.assert();
+        if self.length == 1 {
+            return value;
+        }
         let is_valid = self.batch_validator.next(value);
         let (first_value, last_value, is_filled) = self.lifo.next(value);
         let mut mean: Option<f64> = None;

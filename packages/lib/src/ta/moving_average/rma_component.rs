@@ -11,7 +11,7 @@ pub struct RunningMovingAverageComponent {
 
 impl RunningMovingAverageComponent {
     pub fn new(ctx: ComponentContext, length: usize) -> Self {
-        assert!(length > 1, "RecursiveRMA must have a length larger than 1");
+        assert!(length > 0, "RecursiveRMA must have a length larger than 0");
         return RunningMovingAverageComponent {
             length,
             ctx: ctx.clone(),

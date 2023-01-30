@@ -5,6 +5,7 @@ pub mod bars;
 pub mod bollinger;
 pub mod chaikin;
 pub mod chande;
+pub mod chop;
 pub mod cross;
 pub mod moving_average;
 pub mod relative_strength_index;

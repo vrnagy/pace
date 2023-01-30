@@ -20,6 +20,17 @@ mod tests {
     }
 
     #[test]
+    fn test_ema_btc_1d_length1_close() {
+        let (_df, ctx, expected) =
+            Fixture::load("ta/moving_average/tests/fixtures/ema/btc_1d_length_1_close.csv");
+        _test(
+            &mut ctx.clone(),
+            &mut ExponentialMovingAverageComponent::new(ctx.clone(), 1),
+            &expected,
+        );
+    }
+
+    #[test]
     fn test_ema_btc_1d_length2_close() {
         let (_df, ctx, expected) =
             Fixture::load("ta/moving_average/tests/fixtures/ema/btc_1d_length_2_close.csv");
