@@ -1,1 +1,2 @@
 mod chande_kroll_stop_indicator_test;
+mod chande_momentum_oscillator_indicator_test;

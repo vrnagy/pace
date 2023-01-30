@@ -15,3 +15,14 @@ pub fn ps_min(a: Option<f64>, b: Option<f64>) -> Option<f64> {
         _ => None,
     }
 }
+
+pub fn ps_diff(value: Option<f64>, prev_value: Option<f64>) -> Option<f64> {
+    match (value, prev_value) {
+        (Some(value), Some(prev_value)) => Some(value - prev_value),
+        _ => None,
+    }
+}
+
+pub fn ps_abs(value: Option<f64>) -> Option<f64> {
+    return value.map(|v| v.abs());
+}

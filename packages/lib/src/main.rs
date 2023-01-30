@@ -22,6 +22,7 @@ mod data;
 mod features;
 mod math;
 mod ml;
+mod pinescript;
 mod strategy;
 mod ta;
 mod testing;
