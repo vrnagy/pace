@@ -1,6 +1,7 @@
 use crate::components::{
     batch_validator::recursive_batch_validator::RecursiveBatchValidator,
     component_context::ComponentContext, lifo::recursive_lifo::RecursiveLIFO,
+    position::recursive_position::RecursivePosition,
 };
 
 pub struct SimpleMovingAverageComponent {
@@ -10,6 +11,7 @@ pub struct SimpleMovingAverageComponent {
     sum: f64,
     lifo: RecursiveLIFO,
     batch_validator: RecursiveBatchValidator,
+    position: RecursivePosition,
 }
 
 impl SimpleMovingAverageComponent {
@@ -22,6 +24,7 @@ impl SimpleMovingAverageComponent {
             sum: 0.0,
             lifo: RecursiveLIFO::new(ctx.clone(), length),
             batch_validator: RecursiveBatchValidator::new(ctx.clone(), length),
+            position: RecursivePosition::new(ctx.clone()),
         };
     }
 

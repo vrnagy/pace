@@ -13,4 +13,5 @@ pub mod donchian;
 pub mod moving_average;
 pub mod price_oscillator;
 pub mod relative_strength_index;
+pub mod relative_volatility_index;
 pub mod true_range;

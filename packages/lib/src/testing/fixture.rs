@@ -31,10 +31,17 @@ impl Fixture {
         return (df, ctx);
     }
 
-    pub fn load(path: &str) -> (DataFrame, ComponentContext, Vec<Option<f64>>) {
+    pub fn load_with_target(
+        path: &str,
+        target: &str,
+    ) -> (DataFrame, ComponentContext, Vec<Option<f64>>) {
         let (df, ctx) = Self::raw(path);
-        let values = df.column("_target_").unwrap().to_f64();
+        let values = df.column(target).unwrap().to_f64();
         return (df, ctx, values);
+    }
+
+    pub fn load(path: &str) -> (DataFrame, ComponentContext, Vec<Option<f64>>) {
+        return Self::load_with_target(path, "_target_");
     }
 
     pub fn strategy(path: &str) -> (DataFrame, ComponentContext, Vec<Option<StrategyActionKind>>) {
