@@ -130,6 +130,6 @@ impl DirectionalMovementIndexIndicator {
         };
         let adx = self.adx.next(adx).map(|x| x * 100.0);
 
-        let plus = return DirectionalMovementIndexIndicatorResult { plus, minus, adx };
+        return DirectionalMovementIndexIndicatorResult { plus, minus, adx };
     }
 }
