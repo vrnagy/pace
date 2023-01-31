@@ -42,3 +42,4 @@ $ yarn install
 - https://nnethercote.github.io/2022/07/20/how-to-speed-up-the-rust-compiler-in-july-2022.html
 - https://nnethercote.github.io/perf-book/build-configuration.html#link-time-optimization
 - https://www.reddit.com/r/rust/comments/yecr1v/how_to_speed_up_the_rust_compiler_in_october_2022/
+- https://www.tradingview.com/script/vTloluai-Hurst-Exponent-Detrended-Fluctuation-Analysis-pig/
