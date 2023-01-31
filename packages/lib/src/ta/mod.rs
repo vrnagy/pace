@@ -7,6 +7,7 @@ pub mod chaikin;
 pub mod chande;
 pub mod chop;
 pub mod cross;
+pub mod directional_movement_index;
 pub mod donchian;
 pub mod moving_average;
 pub mod price_oscillator;
