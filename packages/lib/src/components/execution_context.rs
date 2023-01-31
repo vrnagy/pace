@@ -83,6 +83,18 @@ impl ExecutionContext {
         }
     }
 
+    pub fn hlc3(&self) -> Option<f64> {
+        let high = self.high();
+        let low = self.low();
+        let close = self.close();
+        match (high, low, close) {
+            (Some(high), Some(low), Some(close)) => {
+                return Some(MovingAverage::hlc3(high, low, close))
+            }
+            _ => return None,
+        }
+    }
+
     pub fn opens(&self) -> &[Option<f64>] {
         return self
             .asset_data_provider

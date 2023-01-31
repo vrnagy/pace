@@ -45,7 +45,7 @@ impl Source {
             SourceKind::Close => ctx.close(),
             SourceKind::Volume => ctx.volume(),
             SourceKind::OHLC4 => todo!(),
-            SourceKind::HLC3 => todo!(),
+            SourceKind::HLC3 => ctx.hlc3(),
             SourceKind::HL2 => ctx.hl2(),
         }
         // return (self.get_delegate)(&self.ctx);
