@@ -1,12 +1,14 @@
 use crate::{
-    components::{component_context::ComponentContext, source::Source},
+    components::{
+        component_context::ComponentContext, dev::stdev_component::StandardDeviationComponent,
+        source::Source,
+    },
     ta::{
         bars::utils::BarUtils,
         moving_average::{
             ma::MovingAverageKind, ma_component::MovingAverageComponent,
             sma_component::SimpleMovingAverageComponent,
         },
-        stdev::stdev_component::StandardDeviationComponent,
     },
 };
 

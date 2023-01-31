@@ -1,5 +1,6 @@
 pub mod batch_validator;
 pub mod component_context;
+pub mod dev;
 pub mod execution_context;
 pub mod fixnan;
 pub mod lifo;
