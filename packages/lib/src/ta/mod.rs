@@ -9,6 +9,7 @@ pub mod chop;
 pub mod cross;
 pub mod donchian;
 pub mod moving_average;
+pub mod price_oscillator;
 pub mod relative_strength_index;
 pub mod stdev;
 pub mod true_range;
