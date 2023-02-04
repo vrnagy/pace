@@ -26,3 +26,11 @@ pub fn ps_diff(value: Option<f64>, prev_value: Option<f64>) -> Option<f64> {
 pub fn ps_abs(value: Option<f64>) -> Option<f64> {
     return value.map(|v| v.abs());
 }
+
+pub fn is_equal(a: Option<f64>, b: Option<f64>) -> bool {
+    match (a, b) {
+        (Some(a), Some(b)) => a == b,
+        (None, None) => true,
+        _ => false,
+    }
+}

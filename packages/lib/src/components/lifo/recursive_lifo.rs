@@ -29,7 +29,11 @@ impl RecursiveLIFO {
     }
 
     pub fn values(&mut self) -> &[Option<f64>] {
-        let start_index = self.values.len() - (self.size - 1);
+        let start_index = if self.values.len() < self.size {
+            0
+        } else {
+            self.values.len() - (self.size - 1)
+        };
         return &self.values[start_index..];
         // self.values.make_contiguous();
         // return self.values.as_slices().0;

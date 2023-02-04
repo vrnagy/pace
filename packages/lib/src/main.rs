@@ -11,6 +11,8 @@
 
 use std::path::Path;
 
+use components::change::recursive_prank::RecursivePercentRank;
+
 use crate::{
     asset::timeframe::Timeframe, components::component_context::ComponentContext,
     data::csv::read_csv, testing::fixture::Fixture,
@@ -35,5 +37,20 @@ fn generate_ml_dataset() {
 }
 
 fn main() {
-    generate_ml_dataset();
+    let (_df, cctx, expected) =
+        Fixture::load("components/change/tests/fixtures/prank/btc_1d_length_14_close.csv");
+    let mut target = RecursivePercentRank::new(cctx.clone(), 14);
+    for cctx in cctx {
+        let ctx = cctx.get();
+        let output = target.next(ctx.close());
+        println!(
+            "[{}]: {:?} | {:?}",
+            ctx.current_tick, output, expected[ctx.current_tick]
+        );
+        if ctx.current_tick > 35 {
+            break;
+        }
+    }
+
+    // generate_ml_dataset();
 }
