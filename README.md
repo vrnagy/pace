@@ -44,3 +44,4 @@ $ yarn install
 - https://www.reddit.com/r/rust/comments/yecr1v/how_to_speed_up_the_rust_compiler_in_october_2022/
 - https://www.tradingview.com/script/vTloluai-Hurst-Exponent-Detrended-Fluctuation-Analysis-pig/
 - https://deterministic.space/high-performance-rust.html
+- https://hal.science/hal-03142251/document
