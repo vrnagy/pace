@@ -1,5 +1,8 @@
 use crate::{
-    components::{component_context::ComponentContext, lifo::recursive_lifo::RecursiveLIFO},
+    components::{
+        batch_validator::recursive_batch_validator::RecursiveBatchValidator,
+        component_context::ComponentContext, lifo::recursive_lifo::RecursiveLIFO,
+    },
     math::comparison::FloatComparison,
     ta::moving_average::{
         rma_component::RunningMovingAverageComponent, sma_component::SimpleMovingAverageComponent,
@@ -38,20 +41,24 @@ impl DeviationComponent {
         let mean = self.sma.next(value);
         let (first_value, last_value, is_filled) = self.value_lifo.next(value);
 
-        if last_value.is_none() || mean.is_none() {
+        if last_value.is_none() || mean.is_none() || !is_filled {
             return None;
         }
 
         let mean = mean.unwrap();
         let mut sum: f64 = 0.0;
 
-        for i in 0..self.length {
-            let _value = if i == self.length - 1 {
-                first_value.unwrap()
-            } else {
-                self.value_lifo.at(i).unwrap()
-            };
-            sum += (_value - mean).abs();
+        if let Some(first_value) = first_value {
+            sum += (first_value - mean).abs();
+        }
+
+        let values = self.value_lifo.values();
+
+        for i in 0..self.length - 1 {
+            let _value = values[i];
+            if let Some(_value) = _value {
+                sum += (_value - mean).abs();
+            }
         }
 
         let dev = sum / self.length as f64;

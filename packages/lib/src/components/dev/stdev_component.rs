@@ -59,14 +59,19 @@ impl StandardDeviationComponent {
         let mut sum_of_square_deviations: f64 = 0.0;
         let avg = -avg.unwrap();
 
-        for i in 0..self.length {
-            let _value = if i == self.length - 1 {
-                first_value.unwrap()
-            } else {
-                self.value_lifo.at(i).unwrap()
-            };
-            let sum = Self::compute_sum(_value, avg);
+        if let Some(first_value) = first_value {
+            let sum = Self::compute_sum(first_value, avg);
             sum_of_square_deviations += sum.powf(2.0);
+        }
+
+        let values = self.value_lifo.values();
+
+        for i in 0..self.length - 1 {
+            let _value = values[i];
+            if let Some(_value) = _value {
+                let sum = Self::compute_sum(_value, avg);
+                sum_of_square_deviations += sum.powf(2.0);
+            }
         }
 
         let stdev = if self.is_biased {

@@ -21,7 +21,9 @@ impl RecursiveLIFO {
         };
     }
 
-    pub fn at(&self, index: usize) -> &Option<f64> {
+    pub fn at(&mut self, index: usize) -> &Option<f64> {
+        self.values.make_contiguous();
+        let index = self.size - 1 - index;
         return self.values.get(index).unwrap();
     }
 
