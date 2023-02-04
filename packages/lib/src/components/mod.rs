@@ -1,4 +1,5 @@
 pub mod batch_validator;
+pub mod change;
 pub mod component_context;
 pub mod dev;
 pub mod execution_context;
