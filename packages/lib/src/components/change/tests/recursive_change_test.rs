@@ -25,7 +25,7 @@ mod tests {
     #[test]
     fn test_recursive_change_1_length_btc_1d_close() {
         let (_df, ctx, expected) =
-            Fixture::load("components/change/tests/fixtures/btc_1d_length_1_close.csv");
+            Fixture::load("components/change/tests/fixtures/change/btc_1d_length_1_close.csv");
         _test(
             &mut ctx.clone(),
             &mut RecursiveChange::new(ctx.clone(), 1),
@@ -36,7 +36,7 @@ mod tests {
     #[test]
     fn test_recursive_change_2_length_btc_1d_close() {
         let (_df, ctx, expected) =
-            Fixture::load("components/change/tests/fixtures/btc_1d_length_2_close.csv");
+            Fixture::load("components/change/tests/fixtures/change/btc_1d_length_2_close.csv");
         _test(
             &mut ctx.clone(),
             &mut RecursiveChange::new(ctx.clone(), 2),
@@ -47,7 +47,7 @@ mod tests {
     #[test]
     fn test_recursive_change_3_length_btc_1d_close() {
         let (_df, ctx, expected) =
-            Fixture::load("components/change/tests/fixtures/btc_1d_length_3_close.csv");
+            Fixture::load("components/change/tests/fixtures/change/btc_1d_length_3_close.csv");
         _test(
             &mut ctx.clone(),
             &mut RecursiveChange::new(ctx.clone(), 3),
@@ -58,7 +58,7 @@ mod tests {
     #[test]
     fn test_recursive_change_365_length_btc_1d_close() {
         let (_df, ctx, expected) =
-            Fixture::load("components/change/tests/fixtures/btc_1d_length_365_close.csv");
+            Fixture::load("components/change/tests/fixtures/change/btc_1d_length_365_close.csv");
         _test(
             &mut ctx.clone(),
             &mut RecursiveChange::new(ctx.clone(), 365),

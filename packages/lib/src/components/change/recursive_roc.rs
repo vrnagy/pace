@@ -1,15 +1,15 @@
 use crate::components::{component_context::ComponentContext, lifo::recursive_lifo::RecursiveLIFO};
 
-pub struct RecursiveChange {
+pub struct RecursiveRateOfChange {
     length: usize,
     ctx: ComponentContext,
     lifo: RecursiveLIFO,
 }
 
-impl RecursiveChange {
+impl RecursiveRateOfChange {
     pub fn new(ctx: ComponentContext, length: usize) -> Self {
-        assert!(length >= 1, "RecursiveChange length must be >= 1");
-        return RecursiveChange {
+        assert!(length >= 1, "RecursiveRateOfChange length must be >= 1");
+        return RecursiveRateOfChange {
             ctx: ctx.clone(),
             length,
             lifo: RecursiveLIFO::new(ctx.clone(), length + 1),
@@ -29,6 +29,7 @@ impl RecursiveChange {
         if first_value == 0.0 {
             return None;
         }
-        return Some(last_value.unwrap() - first_value);
+        let last_value = last_value.unwrap();
+        return Some(100.0 * (last_value - first_value) / first_value);
     }
 }
