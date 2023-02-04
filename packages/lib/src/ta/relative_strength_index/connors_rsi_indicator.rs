@@ -57,18 +57,16 @@ impl ConnorsRelativeStrengthIndexIndicator {
             return Some(0.0);
         }
         let prev_ud = ps_nz(prev_ud);
-        if !src.is_none() && !prev_src.is_none() && src.unwrap() > prev_src.unwrap() {
+        if src.is_some() && prev_src.is_some() && src.unwrap() > prev_src.unwrap() {
             if prev_ud <= 0.0 {
                 return Some(1.0);
             } else {
                 return Some(prev_ud + 1.0);
             }
+        } else if prev_ud >= 0.0 {
+            return Some(-1.0);
         } else {
-            if prev_ud >= 0.0 {
-                return Some(-1.0);
-            } else {
-                return Some(prev_ud - 1.0);
-            }
+            return Some(prev_ud - 1.0);
         }
     }
 
