@@ -39,6 +39,11 @@ impl RecursiveLIFO {
         // return self.values.as_slices().0;
     }
 
+    pub fn values_with_first(&mut self) -> &[Option<f64>] {
+        let start_index = self.values.len() - self.size;
+        return &self.values[start_index..];
+    }
+
     pub fn next(&mut self, value: Option<f64>) -> (Option<f64>, Option<f64>, bool) {
         self.ctx.assert();
         let mut first_value: Option<f64> = None;
