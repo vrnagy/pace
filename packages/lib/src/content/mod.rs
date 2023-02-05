@@ -20,5 +20,6 @@ pub mod relative_vigor_index_indicator;
 pub mod relative_volatility_index_indicator;
 pub mod stoch_relative_volatility_index_indicator;
 pub mod volume_oscillator_indicator;
+pub mod vortex_indicator;
 
 mod tests;

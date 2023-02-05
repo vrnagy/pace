@@ -48,7 +48,7 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         let rsi = rsi_indicator.next();
         let rsi_action = rsi_strategy.next(rsi);
         let rsi_feat = FeatureNamespace::new(
-            "rsi".to_string(),
+            "rsi",
             rsi_fb
                 .next(
                     rsi,

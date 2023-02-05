@@ -12,6 +12,7 @@ mod rsi_component_test;
 mod sma_component_test;
 mod stdev_component_test;
 mod stoch_component_test;
+mod sum_component_test;
 mod swma_component_test;
 mod tr_component_test;
 mod wma_component_test;

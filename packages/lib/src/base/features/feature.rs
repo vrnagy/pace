@@ -32,8 +32,11 @@ impl Feature for FeatureNamespace {
 }
 
 impl FeatureNamespace {
-    pub fn new(name: String, feature: Box<dyn Feature>) -> Self {
-        return FeatureNamespace { name, feature };
+    pub fn new(name: &str, feature: Box<dyn Feature>) -> Self {
+        return FeatureNamespace {
+            name: String::from(name),
+            feature,
+        };
     }
 }
 
