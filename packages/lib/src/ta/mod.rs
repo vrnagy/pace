@@ -17,3 +17,4 @@ pub mod relative_strength_index;
 pub mod relative_vigor_index;
 pub mod relative_volatility_index;
 pub mod true_range;
+pub mod volume_oscillator;

@@ -1,0 +1,1 @@
+mod volume_oscillator_indicator_test;
