@@ -12,7 +12,7 @@ pub enum FeatureKind {
 
 pub trait Feature {
     fn flatten(&self) -> HashMap<String, Option<f64>>;
-    fn as_box(self) -> Box<dyn Feature>
+    fn to_box(self) -> Box<dyn Feature>
     where
         Self: 'static + Sized,
     {

@@ -17,8 +17,7 @@ impl FeatureComposer {
     }
 
     pub fn push(&mut self, feature: Box<dyn Feature>) {
-        let mut row = vec![];
-        row.push(feature);
+        let mut row = vec![feature];
         self.rows.push(row);
     }
 

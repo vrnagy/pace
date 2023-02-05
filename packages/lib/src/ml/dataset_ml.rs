@@ -56,12 +56,12 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
                     rsi_action,
                     &rsi_strategy.config,
                 )
-                .as_box(),
+                .to_box(),
         );
 
-        combined.push(rsi_feat.as_box());
-        combined.push(asset_fb.next().as_box());
-        composer.push(combined.as_box());
+        combined.push(rsi_feat.to_box());
+        combined.push(asset_fb.next().to_box());
+        composer.push(combined.to_box());
     }
 
     let mut df = composer.to_df();
