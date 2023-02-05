@@ -7,6 +7,7 @@ pub mod chaikin;
 pub mod chande;
 pub mod chop;
 pub mod commodity;
+pub mod coppock_curve;
 pub mod cross;
 pub mod directional_movement_index;
 pub mod donchian;
