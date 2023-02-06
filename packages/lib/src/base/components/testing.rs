@@ -6,7 +6,7 @@ use polars::prelude::DataFrame;
 use crate::{
     base::{
         asset::timeframe::Timeframe,
-        strategy::{action::TradeDirection, polars::SeriesCastUtilsForStrategy},
+        strategy::{polars::SeriesCastUtilsForStrategy, trade::TradeDirection},
     },
     utils::{comparison::FloatComparison, csv::read_csv, polars::SeriesCastUtils},
 };

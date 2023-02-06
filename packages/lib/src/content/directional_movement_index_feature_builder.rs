@@ -4,7 +4,7 @@ use crate::base::{
     components::component_context::ComponentContext,
     features::{feature::Feature, feature_regions::FeatureTernaryTrendRegions},
     statistics::scale_value_min_max,
-    strategy::action::{trade_direction_to_f64, TradeDirection},
+    strategy::trade::{trade_direction_to_f64, TradeDirection},
 };
 
 use super::{

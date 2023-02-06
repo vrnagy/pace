@@ -7,7 +7,7 @@ mod tests {
                 component_context::ComponentContext,
                 testing::{ComponentTestSnapshot, Fixture},
             },
-            strategy::action::TradeDirection,
+            strategy::trade::TradeDirection,
         },
         content::{
             relative_strength_index_indicator::{

@@ -28,13 +28,3 @@ pub fn trade_direction_from_f64(value: Option<f64>) -> Option<TradeDirection> {
         None => None,
     };
 }
-
-// impl StrategyActionKind {
-//     pub fn to_f64(&self) -> f64 {
-//         return match self {
-//             StrategyActionKind::None => 0.0,
-//             StrategyActionKind::Long => 1.0,
-//             StrategyActionKind::Short => -1.0,
-//         };
-//     }
-// }

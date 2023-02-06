@@ -7,7 +7,7 @@ use polars::{
 
 use crate::utils::polars::SeriesCastUtils;
 
-use super::action::{trade_direction_from_f64, TradeDirection};
+use super::trade::{trade_direction_from_f64, TradeDirection};
 
 pub trait SeriesCastUtilsForStrategy {
     fn to_trade(&self) -> Vec<Option<TradeDirection>>;

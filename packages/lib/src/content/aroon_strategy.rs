@@ -1,6 +1,6 @@
 use crate::base::{
     components::{component_context::ComponentContext, component_default::ComponentDefault},
-    strategy::action::TradeDirection,
+    strategy::trade::TradeDirection,
     ta::{
         cross::CrossMode, cross_component::CrossComponent,
         cross_over_component::CrossOverComponent, cross_under_component::CrossUnderComponent,
