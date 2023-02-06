@@ -25,6 +25,9 @@ use crate::{
             AwesomeOscillatorIndicator, AwesomeOscillatorIndicatorConfig,
         },
         awesome_oscillator_strategy::{AwesomeOscillatorStrategy, AwesomeOscillatorStrategyConfig},
+        balance_of_power_feature_builder::BalanceOfPowerFeatureBuilder,
+        balance_of_power_indicator::BalanceOfPowerIndicator,
+        balance_of_power_strategy::{BalanceOfPowerStrategy, BalanceOfPowerStrategyConfig},
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -64,6 +67,13 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut ao_fb = AwesomeOscillatorFeatureBuilder::new(ctx.clone());
 
+    let mut bp_indicator = BalanceOfPowerIndicator::new(ctx.clone());
+    let mut bp_strategy = BalanceOfPowerStrategy::new(
+        ctx.clone(),
+        BalanceOfPowerStrategyConfig::default(ctx.clone()),
+    );
+    let mut bp_fb = BalanceOfPowerFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -94,11 +104,17 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // );
         // combined.push(aroon_feat.to_box());
 
-        let ao = ao_indicator.next();
-        let ao_trade = ao_strategy.next(ao);
-        let ao_feat =
-            FeatureNamespace::new("ao", ao_fb.next(ao, ao_trade, &ao_strategy.config).to_box());
-        combined.push(ao_feat.to_box());
+        // let ao = ao_indicator.next();
+        // let ao_trade = ao_strategy.next(ao);
+        // let ao_feat =
+        //     FeatureNamespace::new("ao", ao_fb.next(ao, ao_trade, &ao_strategy.config).to_box());
+        // combined.push(ao_feat.to_box());
+
+        let bp = bp_indicator.next();
+        let bp_trade = bp_strategy.next(bp);
+        let bp_feat =
+            FeatureNamespace::new("bp", bp_fb.next(bp, bp_trade, &bp_strategy.config).to_box());
+        combined.push(bp_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());

@@ -4,6 +4,9 @@ pub struct BalanceOfPowerIndicator {
     ctx: ComponentContext,
 }
 
+pub static BALANCE_OF_POWER_MIN_VALUE: f64 = -1.0;
+pub static BALANCE_OF_POWER_MAX_VALUE: f64 = 1.0;
+
 impl BalanceOfPowerIndicator {
     pub fn new(ctx: ComponentContext) -> Self {
         return BalanceOfPowerIndicator { ctx: ctx.clone() };
