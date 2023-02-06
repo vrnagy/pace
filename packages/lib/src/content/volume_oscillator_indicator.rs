@@ -32,6 +32,9 @@ pub struct VolumeOscillatorIndicator {
     long_ma: MovingAverageComponent,
 }
 
+pub static VOLUME_OSCILLATOR_MIN_VALUE: f64 = -100.0;
+pub static VOLUME_OSCILLATOR_MAX_VALUE: f64 = 100.0;
+
 impl VolumeOscillatorIndicator {
     pub fn new(ctx: ComponentContext, config: VolumeOscillatorIndicatorConfig) -> Self {
         return VolumeOscillatorIndicator {

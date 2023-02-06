@@ -110,6 +110,9 @@ use crate::{
         ultimate_oscillator_indicator::{
             UltimateOscillatorIndicator, UltimateOscillatorIndicatorConfig,
         },
+        volume_oscillator_feature_builder::VolumeOscillatorFeatureBuilder,
+        volume_oscillator_indicator::{VolumeOscillatorIndicator, VolumeOscillatorIndicatorConfig},
+        volume_oscillator_strategy::{VolumeOscillatorStrategy, VolumeOscillatorStrategyConfig},
     },
 };
 
@@ -274,6 +277,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut uo_fb = UltimateOscillatorFeatureBuilder::new(ctx.clone());
 
+    let mut vo_indicator = VolumeOscillatorIndicator::new(
+        ctx.clone(),
+        VolumeOscillatorIndicatorConfig::default(ctx.clone()),
+    );
+    let mut vo_strategy = VolumeOscillatorStrategy::new(
+        ctx.clone(),
+        VolumeOscillatorStrategyConfig::default(ctx.clone()),
+    );
+    let mut vo_fb = VolumeOscillatorFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -411,9 +424,14 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // );
         // combined.push(stoch_rsi_feat.to_box());
 
-        let uo = uo_indicator.next();
-        let uo_feat = FeatureNamespace::new("uo", uo_fb.next(uo).to_box());
-        combined.push(uo_feat.to_box());
+        // let uo = uo_indicator.next();
+        // let uo_feat = FeatureNamespace::new("uo", uo_fb.next(uo).to_box());
+        // combined.push(uo_feat.to_box());
+
+        let vo = vo_indicator.next();
+        let vo_trade = vo_strategy.next(vo);
+        let vo_feat = FeatureNamespace::new("vo", vo_fb.next(vo, vo_trade).to_box());
+        combined.push(vo_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());

@@ -54,7 +54,9 @@ pub mod stoch_relative_strength_index_indicator;
 pub mod stoch_relative_strength_index_strategy;
 pub mod ultimate_oscillator_feature_builder;
 pub mod ultimate_oscillator_indicator;
+pub mod volume_oscillator_feature_builder;
 pub mod volume_oscillator_indicator;
+pub mod volume_oscillator_strategy;
 pub mod vortex_indicator;
 pub mod williams_percent_range_indicator;
 
