@@ -40,6 +40,9 @@ pub struct DirectionalMovementIndexIndicator {
     adx: RunningMovingAverageComponent,
 }
 
+pub static DIRECTIONAL_MOVEMENT_INDEX_MIN_VALUE: f64 = 0.0;
+pub static DIRECTIONAL_MOVEMENT_INDEX_MAX_VALUE: f64 = 100.0;
+
 impl DirectionalMovementIndexIndicator {
     pub fn new(ctx: ComponentContext, config: DirectionalMovementIndexIndicatorConfig) -> Self {
         return DirectionalMovementIndexIndicator {

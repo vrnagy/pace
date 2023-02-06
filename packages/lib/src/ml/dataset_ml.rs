@@ -70,6 +70,13 @@ use crate::{
         coppock_curve_feature_builder::CoppockCurveFeatureBuilder,
         coppock_curve_indicator::{CoppockCurveIndicator, CoppockCurveIndicatorConfig},
         coppock_curve_strategy::{CoppockCurveStrategy, CoppockCurveStrategyConfig},
+        directional_movement_index_feature_builder::DirectionalMovementIndexFeatureBuilder,
+        directional_movement_index_indicator::{
+            DirectionalMovementIndexIndicator, DirectionalMovementIndexIndicatorConfig,
+        },
+        directional_movement_index_strategy::{
+            DirectionalMovementIndexStrategy, DirectionalMovementIndexStrategyConfig,
+        },
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -188,6 +195,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut cc_fb = CoppockCurveFeatureBuilder::new(ctx.clone());
 
+    let mut dmi_indicator = DirectionalMovementIndexIndicator::new(
+        ctx.clone(),
+        DirectionalMovementIndexIndicatorConfig::default(ctx.clone()),
+    );
+    let mut dmi_strategy = DirectionalMovementIndexStrategy::new(
+        ctx.clone(),
+        DirectionalMovementIndexStrategyConfig::default(ctx.clone()),
+    );
+    let mut dmi_fb = DirectionalMovementIndexFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -282,11 +299,19 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // );
         // combined.push(connors_rsi_feat.to_box());
 
-        let cc = cc_indicator.next();
-        let cc_trade = cc_strategy.next(cc);
-        let cc_feat =
-            FeatureNamespace::new("cc", cc_fb.next(cc, cc_trade, &cc_strategy.config).to_box());
-        combined.push(cc_feat.to_box());
+        // let cc = cc_indicator.next();
+        // let cc_trade = cc_strategy.next(cc);
+        // let cc_feat =
+        //     FeatureNamespace::new("cc", cc_fb.next(cc, cc_trade, &cc_strategy.config).to_box());
+        // combined.push(cc_feat.to_box());
+
+        let dmi = dmi_indicator.next();
+        let dmi_trade = dmi_strategy.next(&dmi);
+        let dmi_feat = FeatureNamespace::new(
+            "dmi",
+            dmi_fb.next(&dmi, dmi_trade, &dmi_strategy.config).to_box(),
+        );
+        combined.push(dmi_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());
