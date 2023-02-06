@@ -27,6 +27,9 @@ pub struct AroonIndicatorResult {
     pub down: Option<f64>,
 }
 
+pub static AROON_MIN_VALUE: f64 = 0.0;
+pub static AROON_MAX_VALUE: f64 = 100.0;
+
 impl AroonIndicator {
     pub fn new(ctx: ComponentContext, config: AroonIndicatorConfig) -> Self {
         return AroonIndicator {

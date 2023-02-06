@@ -15,6 +15,9 @@ use crate::{
         },
     },
     content::{
+        aroon_feature_builder::AroonFeatureBuilder,
+        aroon_indicator::{AroonIndicator, AroonIndicatorConfig},
+        aroon_strategy::AroonStrategy,
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -26,6 +29,7 @@ use crate::{
 };
 
 pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
+    let mut composer = FeatureComposer::new();
     let mut asset_fb = AssetFeatureBuilder::new(ctx.clone());
 
     let mut rsi_indicator = RelativeStrengthIndexIndicator::new(
@@ -38,7 +42,10 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut rsi_fb = RelativeStrengthIndexFeatureBuilder::new(ctx.clone());
 
-    let mut composer = FeatureComposer::new();
+    let mut aroon_indicator =
+        AroonIndicator::new(ctx.clone(), AroonIndicatorConfig::default(ctx.clone()));
+    let mut aroon_strategy = AroonStrategy::new(ctx.clone());
+    let mut aroon_fb = AroonFeatureBuilder::new(ctx.clone());
 
     for cctx in ctx {
         let ctx = cctx.get();
@@ -59,7 +66,17 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
                 .to_box(),
         );
 
-        combined.push(rsi_feat.to_box());
+        let aroon = aroon_indicator.next();
+        let aroon_trade = aroon_strategy.next(&aroon);
+        let aroon_feat = FeatureNamespace::new(
+            "aroon",
+            aroon_fb
+                .next(&aroon, aroon_strategy.metadata(), aroon_trade)
+                .to_box(),
+        );
+
+        // combined.push(rsi_feat.to_box());
+        combined.push(aroon_feat.to_box());
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());
     }
