@@ -36,9 +36,8 @@ impl HighestComponent {
             return None;
         }
 
-        let values = self.input_cache.all();
-        let highest = compute_highest(values);
-        
+        let highest = compute_highest(self.input_cache.all());
+
         return highest;
     }
 }

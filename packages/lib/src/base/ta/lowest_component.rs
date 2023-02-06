@@ -36,8 +36,7 @@ impl LowestComponent {
             return None;
         }
 
-        let values = self.input_cache.all();
-        let highest = compute_lowest(values);
+        let highest = compute_lowest(self.input_cache.all());
 
         return highest;
     }
