@@ -48,7 +48,7 @@ impl BollingerBandsPercentBFeatureBuilder {
 
         return BollingerBandsPercentBFeature {
             raw: bbpb,
-            main: bbpb.map(|v| clip_value(scale_value_min_max(v, -1.0, 1.0), -1.0, 1.0)),
+            main: bbpb.map(|v| clip_value(scale_value_min_max(v, -0.5, 1.5), -1.0, 1.0)),
             trend: Some(trade_direction_to_f64(bbpb_trade)),
         };
     }
