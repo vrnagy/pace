@@ -92,6 +92,13 @@ use crate::{
             RelativeVigorIndexIndicator, RelativeVigorIndexIndicatorConfig,
         },
         relative_vigor_index_strategy::RelativeVigorIndexStrategy,
+        relative_volatility_index_feature_builder::RelativeVolatilityIndexFeatureBuilder,
+        relative_volatility_index_indicator::{
+            RelativeVolatilityIndexIndicator, RelativeVolatilityIndexIndicatorConfig,
+        },
+        relative_volatility_index_strategy::{
+            RelativeVolatilityIndexStrategy, RelativeVolatilityIndexStrategyConfig,
+        },
     },
 };
 
@@ -230,6 +237,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     let mut rvgi_strategy = RelativeVigorIndexStrategy::new(ctx.clone());
     let mut rvgi_fb = RelativeVigorIndexFeatureBuilder::new(ctx.clone());
 
+    let mut rvi_indicator = RelativeVolatilityIndexIndicator::new(
+        ctx.clone(),
+        RelativeVolatilityIndexIndicatorConfig::default(ctx.clone()),
+    );
+    let mut rvi_strategy = RelativeVolatilityIndexStrategy::new(
+        ctx.clone(),
+        RelativeVolatilityIndexStrategyConfig::default(ctx.clone()),
+    );
+    let mut rvi_fb = RelativeVolatilityIndexFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -344,10 +361,18 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         //     FeatureNamespace::new("po", po_fb.next(po, po_trade, &po_strategy.config).to_box());
         // combined.push(po_feat.to_box());
 
-        let rvgi = rvgi_indicator.next();
-        let rvgi_trade = rvgi_strategy.next(&rvgi);
-        let rvgi_feat = FeatureNamespace::new("rvgi", rvgi_fb.next(&rvgi, rvgi_trade).to_box());
-        combined.push(rvgi_feat.to_box());
+        // let rvgi = rvgi_indicator.next();
+        // let rvgi_trade = rvgi_strategy.next(&rvgi);
+        // let rvgi_feat = FeatureNamespace::new("rvgi", rvgi_fb.next(&rvgi, rvgi_trade).to_box());
+        // combined.push(rvgi_feat.to_box());
+
+        let rvi = rvi_indicator.next();
+        let rvi_trade = rvi_strategy.next(rvi);
+        let rvi_feat = FeatureNamespace::new(
+            "rvi",
+            rvi_fb.next(rvi, rvi_trade, &rvi_strategy.config).to_box(),
+        );
+        combined.push(rvi_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());

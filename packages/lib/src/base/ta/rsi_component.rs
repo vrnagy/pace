@@ -16,8 +16,8 @@ pub struct RelativeStrengthIndexComponent {
     pub metadata: RelativeStrengthIndexComponentMetadata,
 }
 
-pub static RSI_MIN_VALUE: f64 = 0.0;
-pub static RSI_MAX_VALUE: f64 = 100.0;
+pub static RELATIVE_STRENGTH_INDEX_MIN_VALUE: f64 = 0.0;
+pub static RELATIVE_STRENGTH_INDEX_MAX_VALUE: f64 = 100.0;
 
 impl RelativeStrengthIndexComponent {
     pub fn new(ctx: ComponentContext, length: usize) -> Self {

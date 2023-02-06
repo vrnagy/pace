@@ -5,7 +5,10 @@ use crate::base::{
     features::{feature::Feature, feature_regions::FeatureTernaryTrendRegions},
     statistics::scale_value_min_max,
     strategy::action::{trade_direction_to_f64, TradeDirection},
-    ta::rsi_component::{RelativeStrengthIndexComponentMetadata, RSI_MAX_VALUE, RSI_MIN_VALUE},
+    ta::rsi_component::{
+        RelativeStrengthIndexComponentMetadata, RELATIVE_STRENGTH_INDEX_MAX_VALUE,
+        RELATIVE_STRENGTH_INDEX_MIN_VALUE,
+    },
 };
 
 use super::relative_strength_index_strategy::{
@@ -43,8 +46,8 @@ impl RelativeStrengthIndexFeatureBuilder {
     ) -> RelativeStrengthIndexFeature {
         self.ctx.assert();
 
-        let min = RSI_MIN_VALUE;
-        let max = RSI_MAX_VALUE;
+        let min = RELATIVE_STRENGTH_INDEX_MIN_VALUE;
+        let max = RELATIVE_STRENGTH_INDEX_MAX_VALUE;
 
         return RelativeStrengthIndexFeature {
             raw: rsi,

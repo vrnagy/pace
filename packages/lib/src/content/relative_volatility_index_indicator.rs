@@ -32,6 +32,9 @@ pub struct RelativeVolatilityIndexIndicator {
     prev_src: Option<f64>,
 }
 
+pub static RELATIVE_VOLATILITY_INDEX_MIN_VALUE: f64 = 0.0;
+pub static RELATIVE_VOLATILITY_INDEX_MAX_VALUE: f64 = 100.0;
+
 impl RelativeVolatilityIndexIndicator {
     pub fn new(ctx: ComponentContext, config: RelativeVolatilityIndexIndicatorConfig) -> Self {
         return RelativeVolatilityIndexIndicator {

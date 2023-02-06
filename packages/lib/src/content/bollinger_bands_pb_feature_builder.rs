@@ -5,7 +5,6 @@ use crate::base::{
     features::{feature::Feature, feature_regions::FeatureTernaryTrendRegions},
     statistics::{clip_value, scale_value_min_max},
     strategy::action::{trade_direction_to_f64, TradeDirection},
-    ta::rsi_component::{RelativeStrengthIndexComponentMetadata, RSI_MAX_VALUE, RSI_MIN_VALUE},
 };
 
 use super::{
