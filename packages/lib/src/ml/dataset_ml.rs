@@ -106,6 +106,10 @@ use crate::{
         stoch_relative_strength_index_strategy::{
             StochRelativeStrengthIndexStrategy, StochRelativeStrengthIndexStrategyConfig,
         },
+        ultimate_oscillator_feature_builder::UltimateOscillatorFeatureBuilder,
+        ultimate_oscillator_indicator::{
+            UltimateOscillatorIndicator, UltimateOscillatorIndicatorConfig,
+        },
     },
 };
 
@@ -264,6 +268,12 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut stoch_rsi_fb = StochRelativeStrengthIndexFeatureBuilder::new(ctx.clone());
 
+    let mut uo_indicator = UltimateOscillatorIndicator::new(
+        ctx.clone(),
+        UltimateOscillatorIndicatorConfig::default(ctx.clone()),
+    );
+    let mut uo_fb = UltimateOscillatorFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -391,15 +401,19 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // );
         // combined.push(rvi_feat.to_box());
 
-        let stoch_rsi = stoch_rsi_indicator.next();
-        let stoch_rsi_trade = stoch_rsi_strategy.next(&stoch_rsi);
-        let stoch_rsi_feat = FeatureNamespace::new(
-            "stoch_rsi",
-            stoch_rsi_fb
-                .next(&stoch_rsi, stoch_rsi_trade, &stoch_rsi_strategy.config)
-                .to_box(),
-        );
-        combined.push(stoch_rsi_feat.to_box());
+        // let stoch_rsi = stoch_rsi_indicator.next();
+        // let stoch_rsi_trade = stoch_rsi_strategy.next(&stoch_rsi);
+        // let stoch_rsi_feat = FeatureNamespace::new(
+        //     "stoch_rsi",
+        //     stoch_rsi_fb
+        //         .next(&stoch_rsi, stoch_rsi_trade, &stoch_rsi_strategy.config)
+        //         .to_box(),
+        // );
+        // combined.push(stoch_rsi_feat.to_box());
+
+        let uo = uo_indicator.next();
+        let uo_feat = FeatureNamespace::new("uo", uo_fb.next(uo).to_box());
+        combined.push(uo_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());

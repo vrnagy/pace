@@ -34,6 +34,9 @@ pub struct UltimateOscillatorIndicator {
     long_sum_tr: SumComponent,
 }
 
+pub static ULTIMATE_OSCILLATOR_MIN_VALUE: f64 = 0.0;
+pub static ULTIMATE_OSCILLATOR_MAX_VALUE: f64 = 100.0;
+
 impl UltimateOscillatorIndicator {
     pub fn new(ctx: ComponentContext, config: UltimateOscillatorIndicatorConfig) -> Self {
         return UltimateOscillatorIndicator {
