@@ -1,3 +1,5 @@
+use crate::base::ta::cross::CrossMode;
+
 #[derive(Debug, PartialEq, Clone)]
 pub enum TradeDirection {
     Long,

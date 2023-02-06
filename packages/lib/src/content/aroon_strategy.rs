@@ -3,6 +3,7 @@ use crate::base::{
     strategy::action::TradeDirection,
     ta::{
         cross::CrossMode, cross_component::CrossComponent,
+        cross_over_component::CrossOverComponent, cross_under_component::CrossUnderComponent,
         rsi_component::RelativeStrengthIndexComponentMetadata,
     },
 };
@@ -20,8 +21,8 @@ pub struct AroonStrategyMetadata {
 
 pub struct AroonStrategy {
     ctx: ComponentContext,
-    cross_over: CrossComponent,
-    cross_under: CrossComponent,
+    cross_over: CrossOverComponent,
+    cross_under: CrossUnderComponent,
     up_trend_confirmation: bool,
     down_trend_confirmation: bool,
     metadata: AroonStrategyMetadata,
@@ -31,8 +32,8 @@ impl AroonStrategy {
     pub fn new(ctx: ComponentContext) -> Self {
         return AroonStrategy {
             ctx: ctx.clone(),
-            cross_over: CrossComponent::new(ctx.clone(), CrossMode::Over),
-            cross_under: CrossComponent::new(ctx.clone(), CrossMode::Under),
+            cross_over: CrossOverComponent::new(ctx.clone()),
+            cross_under: CrossUnderComponent::new(ctx.clone()),
             up_trend_confirmation: false,
             down_trend_confirmation: false,
             metadata: AroonStrategyMetadata {

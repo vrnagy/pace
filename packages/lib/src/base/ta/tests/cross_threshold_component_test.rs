@@ -7,6 +7,7 @@ mod tests {
         },
         ta::{
             cross::CrossMode, cross_component::CrossComponent,
+            cross_threshold_component::CrossThresholdComponent,
             rsi_component::RelativeStrengthIndexComponent,
         },
     };
@@ -17,16 +18,15 @@ mod tests {
 
     fn _test(
         cctx: &mut ComponentContext,
-        target_cross: &mut CrossComponent,
+        target_cross: &mut CrossThresholdComponent,
         target_rsi: &mut RelativeStrengthIndexComponent,
-        threshold: Option<f64>,
         mode: CrossMode,
         expected: &[Option<f64>],
     ) {
         let mut snapshot = ComponentTestSnapshot::<f64>::new();
         for cctx in cctx {
             let output_rsi = target_rsi.next(cctx.get().close());
-            let output = target_cross.next(output_rsi, threshold);
+            let output = target_cross.next(output_rsi);
             let output = match output {
                 Some(output) => output == mode,
                 None => false,
@@ -42,9 +42,8 @@ mod tests {
         let (_df, ctx, expected) = Fixture::load(&format_path("over/rsi/length_14_close.csv"));
         _test(
             &mut ctx.clone(),
-            &mut CrossComponent::new(ctx.clone()),
+            &mut CrossThresholdComponent::new(ctx.clone(), 30.0),
             &mut RelativeStrengthIndexComponent::new(ctx.clone(), 14),
-            Some(30.0),
             CrossMode::Over,
             &expected,
         );
@@ -55,9 +54,8 @@ mod tests {
         let (_df, ctx, expected) = Fixture::load(&format_path("under/rsi/length_14_close.csv"));
         _test(
             &mut ctx.clone(),
-            &mut CrossComponent::new(ctx.clone()),
+            &mut CrossThresholdComponent::new(ctx.clone(), 70.0),
             &mut RelativeStrengthIndexComponent::new(ctx.clone(), 14),
-            Some(70.0),
             CrossMode::Under,
             &expected,
         );

@@ -7,6 +7,7 @@ mod tests {
         },
         ta::{
             cross::CrossMode, cross_component::CrossComponent,
+            cross_over_component::CrossOverComponent,
             rsi_component::RelativeStrengthIndexComponent,
         },
     };
@@ -17,22 +18,16 @@ mod tests {
 
     fn _test(
         cctx: &mut ComponentContext,
-        target_cross: &mut CrossComponent,
+        target_cross: &mut CrossOverComponent,
         target_rsi: &mut RelativeStrengthIndexComponent,
         threshold: Option<f64>,
-        mode: CrossMode,
         expected: &[Option<f64>],
     ) {
         let mut snapshot = ComponentTestSnapshot::<f64>::new();
         for cctx in cctx {
             let output_rsi = target_rsi.next(cctx.get().close());
             let output = target_cross.next(output_rsi, threshold);
-            let output = match output {
-                Some(output) => output == mode,
-                None => false,
-            };
-            let output = if output { 1.0 } else { 0.0 };
-            snapshot.push(Some(output));
+            snapshot.push(Some(if output { 1.0 } else { 0.0 }));
         }
         snapshot.assert(expected);
     }
@@ -42,23 +37,9 @@ mod tests {
         let (_df, ctx, expected) = Fixture::load(&format_path("over/rsi/length_14_close.csv"));
         _test(
             &mut ctx.clone(),
-            &mut CrossComponent::new(ctx.clone()),
+            &mut CrossOverComponent::new(ctx.clone()),
             &mut RelativeStrengthIndexComponent::new(ctx.clone(), 14),
             Some(30.0),
-            CrossMode::Over,
-            &expected,
-        );
-    }
-
-    #[test]
-    fn under_with_rsi_length_14_close() {
-        let (_df, ctx, expected) = Fixture::load(&format_path("under/rsi/length_14_close.csv"));
-        _test(
-            &mut ctx.clone(),
-            &mut CrossComponent::new(ctx.clone()),
-            &mut RelativeStrengthIndexComponent::new(ctx.clone(), 14),
-            Some(70.0),
-            CrossMode::Under,
             &expected,
         );
     }

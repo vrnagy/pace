@@ -46,3 +46,5 @@ $ yarn install
 - https://deterministic.space/high-performance-rust.html
 - https://hal.science/hal-03142251/document
 - https://www.forrestthewoods.com/blog/should-small-rust-structs-be-passed-by-copy-or-by-borrow/
+- https://www.slideshare.net/ColleenFarrelly/machine-learning-by-analogy-59094152
+- https://kevinlynagh.com/notes/match-vs-lookup/

@@ -3,6 +3,8 @@ use crate::base::{
     strategy::action::TradeDirection,
     ta::{
         cross::CrossMode, cross_component::CrossComponent,
+        cross_over_threshold_component::CrossOverThresholdComponent,
+        cross_under_threshold_component::CrossUnderThresholdComponent,
         rsi_component::RelativeStrengthIndexComponentMetadata,
     },
 };
@@ -29,8 +31,8 @@ impl ComponentDefault for AwesomeOscillatorStrategyConfig {
 pub struct AwesomeOscillatorStrategy {
     pub config: AwesomeOscillatorStrategyConfig,
     ctx: ComponentContext,
-    cross_over: CrossComponent,
-    cross_under: CrossComponent,
+    cross_over: CrossOverThresholdComponent,
+    cross_under: CrossUnderThresholdComponent,
 }
 
 pub static AWESOME_OSCILLATOR_STRATEGY_THRESHOLD_OVERSOLD: f64 = 0.0;
@@ -40,8 +42,11 @@ impl AwesomeOscillatorStrategy {
     pub fn new(ctx: ComponentContext, config: AwesomeOscillatorStrategyConfig) -> Self {
         return AwesomeOscillatorStrategy {
             ctx: ctx.clone(),
-            cross_over: CrossComponent::new(ctx.clone(), CrossMode::Over),
-            cross_under: CrossComponent::new(ctx.clone(), CrossMode::Under),
+            cross_over: CrossOverThresholdComponent::new(ctx.clone(), config.threshold_oversold),
+            cross_under: CrossUnderThresholdComponent::new(
+                ctx.clone(),
+                config.threshold_overbought,
+            ),
             config,
         };
     }
@@ -49,13 +54,8 @@ impl AwesomeOscillatorStrategy {
     pub fn next(&mut self, ao: Option<f64>) -> Option<TradeDirection> {
         self.ctx.on_next();
 
-        let is_cross_over = self
-            .cross_over
-            .next(ao, Some(self.config.threshold_oversold));
-
-        let is_cross_under = self
-            .cross_under
-            .next(ao, Some(self.config.threshold_overbought));
+        let is_cross_over = self.cross_over.next(ao);
+        let is_cross_under = self.cross_under.next(ao);
 
         let result = if is_cross_over {
             Some(TradeDirection::Long)
