@@ -28,6 +28,13 @@ use crate::{
         balance_of_power_feature_builder::BalanceOfPowerFeatureBuilder,
         balance_of_power_indicator::BalanceOfPowerIndicator,
         balance_of_power_strategy::{BalanceOfPowerStrategy, BalanceOfPowerStrategyConfig},
+        bollinger_bands_pb_feature_builder::BollingerBandsPercentBFeatureBuilder,
+        bollinger_bands_pb_indicator::{
+            BollingerBandsPercentBIndicator, BollingerBandsPercentBIndicatorConfig,
+        },
+        bollinger_bands_pb_strategy::{
+            BollingerBandsPercentBStrategy, BollingerBandsPercentBStrategyConfig,
+        },
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -74,6 +81,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut bp_fb = BalanceOfPowerFeatureBuilder::new(ctx.clone());
 
+    let mut bbpb_indicator = BollingerBandsPercentBIndicator::new(
+        ctx.clone(),
+        BollingerBandsPercentBIndicatorConfig::default(ctx.clone()),
+    );
+    let mut bbpb_strategy = BollingerBandsPercentBStrategy::new(
+        ctx.clone(),
+        BollingerBandsPercentBStrategyConfig::default(ctx.clone()),
+    );
+    let mut bbpb_fb = BollingerBandsPercentBFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -110,11 +127,21 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         //     FeatureNamespace::new("ao", ao_fb.next(ao, ao_trade, &ao_strategy.config).to_box());
         // combined.push(ao_feat.to_box());
 
-        let bp = bp_indicator.next();
-        let bp_trade = bp_strategy.next(bp);
-        let bp_feat =
-            FeatureNamespace::new("bp", bp_fb.next(bp, bp_trade, &bp_strategy.config).to_box());
-        combined.push(bp_feat.to_box());
+        // let bp = bp_indicator.next();
+        // let bp_trade = bp_strategy.next(bp);
+        // let bp_feat =
+        //     FeatureNamespace::new("bp", bp_fb.next(bp, bp_trade, &bp_strategy.config).to_box());
+        // combined.push(bp_feat.to_box());
+
+        let bbpb = bbpb_indicator.next();
+        let bbpb_trade = bbpb_strategy.next(bbpb);
+        let bbpb_feat = FeatureNamespace::new(
+            "bbpb",
+            bbpb_fb
+                .next(bbpb, bbpb_trade, &bbpb_strategy.config)
+                .to_box(),
+        );
+        combined.push(bbpb_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());

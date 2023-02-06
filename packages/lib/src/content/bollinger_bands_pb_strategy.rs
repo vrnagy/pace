@@ -14,33 +14,33 @@ use super::{
     relative_strength_index_indicator::RelativeStrengthIndexIndicator,
 };
 
-pub struct BalanceOfPowerStrategyConfig {
+pub struct BollingerBandsPercentBStrategyConfig {
     pub threshold_oversold: f64,
     pub threshold_overbought: f64,
 }
 
-impl ComponentDefault for BalanceOfPowerStrategyConfig {
+impl ComponentDefault for BollingerBandsPercentBStrategyConfig {
     fn default(ctx: ComponentContext) -> Self {
-        return BalanceOfPowerStrategyConfig {
-            threshold_oversold: BALANCE_OF_POWER_STRATEGY_THRESHOLD_OVERSOLD,
-            threshold_overbought: BALANCE_OF_POWER_STRATEGY_THRESHOLD_OVERBOUGHT,
+        return BollingerBandsPercentBStrategyConfig {
+            threshold_overbought: BOLLINGER_BANDS_PB_STRATEGY_THRESHOLD_OVERBOUGHT,
+            threshold_oversold: BOLLINGER_BANDS_PB_STRATEGY_THRESHOLD_OVERSOLD,
         };
     }
 }
 
-pub struct BalanceOfPowerStrategy {
-    pub config: BalanceOfPowerStrategyConfig,
+pub struct BollingerBandsPercentBStrategy {
+    pub config: BollingerBandsPercentBStrategyConfig,
     ctx: ComponentContext,
     cross_over: CrossOverThresholdComponent,
     cross_under: CrossUnderThresholdComponent,
 }
 
-pub static BALANCE_OF_POWER_STRATEGY_THRESHOLD_OVERSOLD: f64 = 0.0;
-pub static BALANCE_OF_POWER_STRATEGY_THRESHOLD_OVERBOUGHT: f64 = 0.0;
+pub static BOLLINGER_BANDS_PB_STRATEGY_THRESHOLD_OVERSOLD: f64 = 0.0;
+pub static BOLLINGER_BANDS_PB_STRATEGY_THRESHOLD_OVERBOUGHT: f64 = 1.0;
 
-impl BalanceOfPowerStrategy {
-    pub fn new(ctx: ComponentContext, config: BalanceOfPowerStrategyConfig) -> Self {
-        return BalanceOfPowerStrategy {
+impl BollingerBandsPercentBStrategy {
+    pub fn new(ctx: ComponentContext, config: BollingerBandsPercentBStrategyConfig) -> Self {
+        return BollingerBandsPercentBStrategy {
             ctx: ctx.clone(),
             cross_over: CrossOverThresholdComponent::new(ctx.clone(), config.threshold_oversold),
             cross_under: CrossUnderThresholdComponent::new(
@@ -51,11 +51,11 @@ impl BalanceOfPowerStrategy {
         };
     }
 
-    pub fn next(&mut self, ao: Option<f64>) -> Option<TradeDirection> {
+    pub fn next(&mut self, bbpb: Option<f64>) -> Option<TradeDirection> {
         self.ctx.on_next();
 
-        let is_cross_over = self.cross_over.next(ao);
-        let is_cross_under = self.cross_under.next(ao);
+        let is_cross_over = self.cross_over.next(bbpb);
+        let is_cross_under = self.cross_under.next(bbpb);
 
         let result = if is_cross_over {
             Some(TradeDirection::Long)
