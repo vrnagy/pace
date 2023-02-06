@@ -109,14 +109,23 @@ impl ExecutionContext {
     }
 
     pub fn prev_high(&self, tick: usize) -> Option<f64> {
+        if self.current_tick < tick {
+            return None;
+        }
         return self.asset_data_provider.get_high(self.current_tick - tick);
     }
 
     pub fn prev_low(&self, tick: usize) -> Option<f64> {
+        if self.current_tick < tick {
+            return None;
+        }
         return self.asset_data_provider.get_low(self.current_tick - tick);
     }
 
     pub fn prev_close(&self, tick: usize) -> Option<f64> {
+        if self.current_tick < tick {
+            return None;
+        }
         return self.asset_data_provider.get_close(self.current_tick - tick);
     }
 

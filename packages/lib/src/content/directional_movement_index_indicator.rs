@@ -61,11 +61,9 @@ impl DirectionalMovementIndexIndicator {
         let ctx = self.ctx.get();
         let high = ctx.high();
         let low = ctx.low();
-        let (prev_high, prev_low, prev_close) = if ctx.current_tick == 0 {
-            (None, None, None)
-        } else {
-            (ctx.prev_high(1), ctx.prev_low(1), ctx.prev_close(1))
-        };
+        let prev_high = ctx.prev_high(1);
+        let prev_low = ctx.prev_low(1);
+        let prev_close = ctx.prev_close(1);
 
         let up = match (high, prev_high) {
             (Some(high), Some(prev_high)) => Some(high - prev_high),

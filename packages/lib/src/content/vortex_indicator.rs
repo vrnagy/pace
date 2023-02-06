@@ -50,11 +50,8 @@ impl VortexIndicator {
         let current_tick = ctx.current_tick;
         let high = ctx.high();
         let low = ctx.low();
-        let (prev_high, prev_low) = if current_tick > 0 {
-            (ctx.prev_high(1), ctx.prev_low(1))
-        } else {
-            (None, None)
-        };
+        let prev_high = ctx.prev_high(1);
+        let prev_low = ctx.prev_low(1);
 
         let high_prev_low_diff = match (high, prev_low) {
             (Some(high), Some(prev_low)) => Some((high - prev_low).abs()),
