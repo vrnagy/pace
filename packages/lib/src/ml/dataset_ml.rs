@@ -51,6 +51,8 @@ use crate::{
         chande_momentum_oscillator_strategy::{
             ChandeMomentumOscillatorStrategy, ChandeMomentumOscillatorStrategyConfig,
         },
+        choppiness_index_feature_builder::ChoppinessIndexFeatureBuilder,
+        choppiness_index_indicator::{ChoppinessIndexIndicator, ChoppinessIndexIndicatorConfig},
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -133,6 +135,12 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut cmo_fb = ChandeMomentumOscillatorFeatureBuilder::new(ctx.clone());
 
+    let mut ci_indicator = ChoppinessIndexIndicator::new(
+        ctx.clone(),
+        ChoppinessIndexIndicatorConfig::default(ctx.clone()),
+    );
+    let mut ci_fb = ChoppinessIndexFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -197,13 +205,17 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // );
         // combined.push(cmf_feat.to_box());
 
-        let cmo = cmo_indicator.next();
-        let cmo_trade = cmo_strategy.next(cmo);
-        let cmo_feat = FeatureNamespace::new(
-            "cmo",
-            cmo_fb.next(cmo, cmo_trade, &cmo_strategy.config).to_box(),
-        );
-        combined.push(cmo_feat.to_box());
+        // let cmo = cmo_indicator.next();
+        // let cmo_trade = cmo_strategy.next(cmo);
+        // let cmo_feat = FeatureNamespace::new(
+        //     "cmo",
+        //     cmo_fb.next(cmo, cmo_trade, &cmo_strategy.config).to_box(),
+        // );
+        // combined.push(cmo_feat.to_box());
+
+        let ci = ci_indicator.next();
+        let ci_feat = FeatureNamespace::new("ci", ci_fb.next(ci).to_box());
+        combined.push(ci_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());
