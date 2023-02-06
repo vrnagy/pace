@@ -29,6 +29,8 @@ pub struct ChandeMomentumOscillatorIndicator {
     sm2: SumComponent,
 }
 
+pub static CHANDE_MOMENTUM_OSCILLATOR_MAX_VALUE: f64 = 100.0;
+
 impl ChandeMomentumOscillatorIndicator {
     pub fn new(ctx: ComponentContext, config: ChandeMomentumOscillatorIndicatorConfig) -> Self {
         assert!(

@@ -44,6 +44,13 @@ use crate::{
             ChaikinMoneyFlowIndicator, ChaikinMoneyFlowIndicatorConfig,
         },
         chaikin_money_flow_strategy::{ChaikinMoneyFlowStrategy, ChaikinMoneyFlowStrategyConfig},
+        chande_momentum_oscillator_feature_builder::ChandeMomentumOscillatorFeatureBuilder,
+        chande_momentum_oscillator_indicator::{
+            ChandeMomentumOscillatorIndicator, ChandeMomentumOscillatorIndicatorConfig,
+        },
+        chande_momentum_oscillator_strategy::{
+            ChandeMomentumOscillatorStrategy, ChandeMomentumOscillatorStrategyConfig,
+        },
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -116,6 +123,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut cmf_fb = ChaikinMoneyFlowFeatureBuilder::new(ctx.clone());
 
+    let mut cmo_indicator = ChandeMomentumOscillatorIndicator::new(
+        ctx.clone(),
+        ChandeMomentumOscillatorIndicatorConfig::default(ctx.clone()),
+    );
+    let mut cmo_strategy = ChandeMomentumOscillatorStrategy::new(
+        ctx.clone(),
+        ChandeMomentumOscillatorStrategyConfig::default(ctx.clone()),
+    );
+    let mut cmo_fb = ChandeMomentumOscillatorFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -172,13 +189,21 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // let bbw_feat = FeatureNamespace::new("bbw", bbw_fb.next(bbw).to_box());
         // combined.push(bbw_feat.to_box());
 
-        let cmf = cmf_indicator.next();
-        let cmf_trade = cmf_strategy.next(cmf);
-        let cmf_feat = FeatureNamespace::new(
-            "cmf",
-            cmf_fb.next(cmf, cmf_trade, &cmf_strategy.config).to_box(),
+        // let cmf = cmf_indicator.next();
+        // let cmf_trade = cmf_strategy.next(cmf);
+        // let cmf_feat = FeatureNamespace::new(
+        //     "cmf",
+        //     cmf_fb.next(cmf, cmf_trade, &cmf_strategy.config).to_box(),
+        // );
+        // combined.push(cmf_feat.to_box());
+
+        let cmo = cmo_indicator.next();
+        let cmo_trade = cmo_strategy.next(cmo);
+        let cmo_feat = FeatureNamespace::new(
+            "cmo",
+            cmo_fb.next(cmo, cmo_trade, &cmo_strategy.config).to_box(),
         );
-        combined.push(cmf_feat.to_box());
+        combined.push(cmo_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());
