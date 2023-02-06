@@ -1,6 +1,7 @@
 use crate::base::{
     asset::source::{Source, SourceKind},
     components::{component_context::ComponentContext, component_default::ComponentDefault},
+    pinescript::utils::{ps_diff, ps_div},
     ta::{
         dev_component::DeviationComponent, ma::MovingAverageKind,
         sma_component::SimpleMovingAverageComponent,
@@ -48,16 +49,7 @@ impl CommodityChannelIndexIndicator {
         let ma = self.sma.next(src);
         let dev = self.dev.next(src);
 
-        let cci = match (src, ma, dev) {
-            (Some(src), Some(ma), Some(dev)) => {
-                if dev == 0.0 {
-                    None
-                } else {
-                    Some((src - ma) / (0.015 * dev))
-                }
-            }
-            _ => None,
-        };
+        let cci = ps_div(ps_diff(src, ma), dev.map(|x| x * 0.015));
 
         return cci;
     }

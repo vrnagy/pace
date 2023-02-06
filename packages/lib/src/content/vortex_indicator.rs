@@ -1,6 +1,7 @@
 use crate::base::{
     asset::source::{Source, SourceKind},
     components::{component_context::ComponentContext, component_default::ComponentDefault},
+    pinescript::utils::{ps_abs, ps_diff, ps_div},
     ta::{
         atr_component::AverageTrueRangeComponent, ma::MovingAverageKind,
         ma_component::MovingAverageComponent, sum_component::SumComponent,
@@ -53,15 +54,8 @@ impl VortexIndicator {
         let prev_high = ctx.prev_high(1);
         let prev_low = ctx.prev_low(1);
 
-        let high_prev_low_diff = match (high, prev_low) {
-            (Some(high), Some(prev_low)) => Some((high - prev_low).abs()),
-            _ => None,
-        };
-
-        let low_prev_high_diff = match (low, prev_high) {
-            (Some(low), Some(prev_high)) => Some((low - prev_high).abs()),
-            _ => None,
-        };
+        let high_prev_low_diff = ps_abs(ps_diff(high, prev_low));
+        let low_prev_high_diff = ps_abs(ps_diff(low, prev_high));
 
         let vmp = self.vmp_sum.next(high_prev_low_diff);
         let vmm = self.vmm_sum.next(low_prev_high_diff);
@@ -69,16 +63,8 @@ impl VortexIndicator {
         let atr = self.atr.next();
         let str = self.atr_sum.next(atr);
 
-        let (vip, vim) = match (vmp, vmm, str) {
-            (Some(vmp), Some(vmm), Some(str)) => {
-                if str == 0.0 {
-                    (None, None)
-                } else {
-                    (Some(vmp / str), Some(vmm / str))
-                }
-            }
-            _ => (None, None),
-        };
+        let vip = ps_div(vmp, str);
+        let vim = ps_div(vmm, str);
 
         return VortexIndicatorResult {
             plus: vip,

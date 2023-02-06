@@ -1,5 +1,6 @@
 use crate::base::{
     components::{component_context::ComponentContext, component_default::ComponentDefault},
+    pinescript::utils::{ps_diff, ps_div},
     ta::{
         ema_component::ExponentialMovingAverageComponent, ma::MovingAverageKind,
         ma_component::MovingAverageComponent,
@@ -58,16 +59,7 @@ impl VolumeOscillatorIndicator {
         let short_ma = self.short_ma.next(volume);
         let long_ma = self.long_ma.next(volume);
 
-        let osc = match (short_ma, long_ma) {
-            (Some(short_ma), Some(long_ma)) => {
-                if long_ma == 0.0 {
-                    None
-                } else {
-                    Some((short_ma - long_ma) / long_ma * 100.0)
-                }
-            }
-            _ => None,
-        };
+        let osc = ps_div(ps_diff(short_ma, long_ma), long_ma).map(|x| x * 100.0);
 
         return osc;
     }

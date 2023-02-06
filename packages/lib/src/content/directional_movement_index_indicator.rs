@@ -3,6 +3,7 @@ use crate::base::{
         common::fixnan_component::FixNanComponent, component_context::ComponentContext,
         component_default::ComponentDefault,
     },
+    pinescript::utils::{ps_diff, ps_div},
     ta::{rma_component::RunningMovingAverageComponent, tr_component::TrueRangeComponent},
 };
 
@@ -65,15 +66,8 @@ impl DirectionalMovementIndexIndicator {
         let prev_low = ctx.prev_low(1);
         let prev_close = ctx.prev_close(1);
 
-        let up = match (high, prev_high) {
-            (Some(high), Some(prev_high)) => Some(high - prev_high),
-            _ => None,
-        };
-
-        let down = match (low, prev_low) {
-            (Some(low), Some(prev_low)) => Some(prev_low - low),
-            _ => None,
-        };
+        let up = ps_diff(high, prev_high);
+        let down = ps_diff(prev_low, low);
 
         let plus_dm = match (up, down) {
             (Some(up), Some(down)) => {
@@ -103,19 +97,8 @@ impl DirectionalMovementIndexIndicator {
         let plus_dm_rma = self.plus_dm_rma.next(plus_dm);
         let minus_dm_rma = self.minus_dm_rma.next(minus_dm);
 
-        let (plus, minus): (Option<f64>, Option<f64>) = match (true_range_rma) {
-            Some(true_range_rma) => {
-                if true_range_rma == 0.0 {
-                    (None, None)
-                } else {
-                    (
-                        plus_dm_rma.map(|x| x / true_range_rma * 100.0),
-                        minus_dm_rma.map(|x| x / true_range_rma * 100.0),
-                    )
-                }
-            }
-            _ => (None, None),
-        };
+        let plus = ps_div(plus_dm_rma, true_range_rma).map(|x| x * 100.0);
+        let minus = ps_div(minus_dm_rma, true_range_rma).map(|x| x * 100.0);
 
         let plus = self.plus_fix_nan.next(plus);
         let minus = self.minus_fix_nan.next(minus);

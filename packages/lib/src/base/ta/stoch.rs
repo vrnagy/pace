@@ -1,3 +1,5 @@
+use crate::base::pinescript::utils::{ps_diff, ps_div};
+
 use super::bars::{compute_highest, compute_lowest};
 
 pub fn compute_stoch(

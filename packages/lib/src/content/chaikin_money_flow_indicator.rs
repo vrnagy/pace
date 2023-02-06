@@ -1,5 +1,6 @@
 use crate::base::{
     components::{component_context::ComponentContext, component_default::ComponentDefault},
+    pinescript::utils::ps_div,
     ta::sum_component::SumComponent,
 };
 
@@ -55,12 +56,8 @@ impl ChaikinMoneyFlowIndicator {
 
         let ad_sum = self.ad_sum.next(ad);
 
-        if ad_sum.is_none() || volume_sum.is_none() || volume_sum.unwrap() == 0.0 {
-            return None;
-        }
+        let cmf = ps_div(ad_sum, volume_sum);
 
-        let cmf = ad_sum.unwrap() / volume_sum.unwrap();
-
-        return Some(cmf);
+        return cmf;
     }
 }

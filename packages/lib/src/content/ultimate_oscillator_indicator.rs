@@ -1,6 +1,6 @@
 use crate::base::{
     components::{component_context::ComponentContext, component_default::ComponentDefault},
-    pinescript::utils::{ps_max, ps_min},
+    pinescript::utils::{ps_diff, ps_div, ps_max, ps_min, ps_nz},
     ta::{
         ema_component::ExponentialMovingAverageComponent, ma::MovingAverageKind,
         ma_component::MovingAverageComponent, sum_component::SumComponent,
@@ -65,14 +65,8 @@ impl UltimateOscillatorIndicator {
 
         let high_ = ps_max(high, prev_close);
         let low_ = ps_min(low, prev_close);
-        let bp = match (close, low_) {
-            (Some(close), Some(low_)) => Some(close - low_),
-            _ => None,
-        };
-        let tr_ = match (high_, low_) {
-            (Some(high_), Some(low_)) => Some(high_ - low_),
-            _ => None,
-        };
+        let bp = ps_diff(close, low_);
+        let tr_ = ps_diff(high_, low_);
 
         let fast_bp_sum = self.short_sum_bp.next(bp);
         let fast_tr_sum = self.short_sum_tr.next(tr_);
@@ -83,28 +77,12 @@ impl UltimateOscillatorIndicator {
         let slow_bp_sum = self.long_sum_bp.next(bp);
         let slow_tr_sum = self.long_sum_tr.next(tr_);
 
-        let uo = match (
-            fast_bp_sum,
-            fast_tr_sum,
-            mid_bp_sum,
-            mid_tr_sum,
-            slow_bp_sum,
-            slow_tr_sum,
-        ) {
-            (
-                Some(fast_bp_sum),
-                Some(fast_tr_sum),
-                Some(mid_bp_sum),
-                Some(mid_tr_sum),
-                Some(slow_bp_sum),
-                Some(slow_tr_sum),
-            ) => {
-                if fast_tr_sum == 0.0 || mid_tr_sum == 0.0 || slow_tr_sum == 0.0 {
-                    return None;
-                }
-                let fast = fast_bp_sum / fast_tr_sum;
-                let mid = mid_bp_sum / mid_tr_sum;
-                let slow = slow_bp_sum / slow_tr_sum;
+        let fast = ps_div(fast_bp_sum, fast_tr_sum);
+        let mid = ps_div(mid_bp_sum, mid_tr_sum);
+        let slow = ps_div(slow_bp_sum, slow_tr_sum);
+
+        let uo = match (fast, mid, slow) {
+            (Some(fast), Some(mid), Some(slow)) => {
                 Some(100.0 * (4.0 * fast + 2.0 * mid + slow) / 7.0)
             }
             _ => None,

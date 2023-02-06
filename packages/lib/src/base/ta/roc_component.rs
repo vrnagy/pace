@@ -1,6 +1,9 @@
-use crate::base::components::{
-    common::fixed_value_cache_component::FixedValueCacheComponent,
-    component_context::ComponentContext,
+use crate::base::{
+    components::{
+        common::fixed_value_cache_component::FixedValueCacheComponent,
+        component_context::ComponentContext,
+    },
+    pinescript::utils::{ps_diff, ps_div},
 };
 
 pub struct RateOfChangeComponent {
@@ -32,6 +35,7 @@ impl RateOfChangeComponent {
         if !is_filled || first_value.is_none() || last_value.is_none() {
             return None;
         }
+
         let first_value = first_value.unwrap();
         if first_value == 0.0 {
             return None;

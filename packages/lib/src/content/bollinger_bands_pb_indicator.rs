@@ -1,6 +1,7 @@
 use crate::base::{
     asset::source::{Source, SourceKind},
     components::{component_context::ComponentContext, component_default::ComponentDefault},
+    pinescript::utils::ps_diff,
     ta::{
         sma_component::SimpleMovingAverageComponent, stdev_component::StandardDeviationComponent,
     },

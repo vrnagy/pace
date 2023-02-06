@@ -1,5 +1,6 @@
 use crate::base::{
     components::{component_context::ComponentContext, component_default::ComponentDefault},
+    pinescript::utils::ps_div,
     ta::{
         sum_component::SumComponent, swma_component::SymmetricallyWeightedMovingAverageComponent,
     },
@@ -68,16 +69,7 @@ impl RelativeVigorIndexIndicator {
         let close_open_sum = self.sum_close_open.next(close_open_swma);
         let high_low_sum = self.sum_high_low.next(high_low_swma);
 
-        let rvi = match (close_open_sum, high_low_sum) {
-            (Some(close_open_sum), Some(high_low_sum)) => {
-                if high_low_sum == 0.0 {
-                    None
-                } else {
-                    Some(close_open_sum / high_low_sum)
-                }
-            }
-            _ => None,
-        };
+        let rvi = ps_div(close_open_sum, high_low_sum);
 
         let sig = self.swma_sig.next(rvi);
 
