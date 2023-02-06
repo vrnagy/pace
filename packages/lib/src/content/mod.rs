@@ -57,7 +57,9 @@ pub mod ultimate_oscillator_indicator;
 pub mod volume_oscillator_feature_builder;
 pub mod volume_oscillator_indicator;
 pub mod volume_oscillator_strategy;
+pub mod vortex_feature_builder;
 pub mod vortex_indicator;
+pub mod vortex_strategy;
 pub mod williams_percent_range_indicator;
 
 mod tests;

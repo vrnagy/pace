@@ -113,6 +113,9 @@ use crate::{
         volume_oscillator_feature_builder::VolumeOscillatorFeatureBuilder,
         volume_oscillator_indicator::{VolumeOscillatorIndicator, VolumeOscillatorIndicatorConfig},
         volume_oscillator_strategy::{VolumeOscillatorStrategy, VolumeOscillatorStrategyConfig},
+        vortex_feature_builder::VortexFeatureBuilder,
+        vortex_indicator::{VortexIndicator, VortexIndicatorConfig},
+        vortex_strategy::{self, VortexStrategy},
     },
 };
 
@@ -287,6 +290,11 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut vo_fb = VolumeOscillatorFeatureBuilder::new(ctx.clone());
 
+    let mut vortex_indicator =
+        VortexIndicator::new(ctx.clone(), VortexIndicatorConfig::default(ctx.clone()));
+    let mut vortex_strategy = VortexStrategy::new(ctx.clone());
+    let mut vortex_fb = VortexFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -428,10 +436,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // let uo_feat = FeatureNamespace::new("uo", uo_fb.next(uo).to_box());
         // combined.push(uo_feat.to_box());
 
-        let vo = vo_indicator.next();
-        let vo_trade = vo_strategy.next(vo);
-        let vo_feat = FeatureNamespace::new("vo", vo_fb.next(vo, vo_trade).to_box());
-        combined.push(vo_feat.to_box());
+        // let vo = vo_indicator.next();
+        // let vo_trade = vo_strategy.next(vo);
+        // let vo_feat = FeatureNamespace::new("vo", vo_fb.next(vo, vo_trade).to_box());
+        // combined.push(vo_feat.to_box());
+
+        let vortex = vortex_indicator.next();
+        let vortex_trade = vortex_strategy.next(&vortex);
+        let vortex_feat =
+            FeatureNamespace::new("vortex", vortex_fb.next(&vortex, vortex_trade).to_box());
+        combined.push(vortex_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());
