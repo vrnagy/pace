@@ -56,7 +56,7 @@ impl ChandeKrollStopFeatureBuilder {
 
 impl ChandeKrollStopFeatureBuilder {
     pub fn new(ctx: ComponentContext) -> Self {
-        !todo!("Not implemented yet");
+        todo!("Not implemented yet");
         return ChandeKrollStopFeatureBuilder { ctx: ctx.clone() };
     }
 }

@@ -40,7 +40,7 @@ pub static CHANDE_KROLL_STOP_STRATEGY_THRESHOLD_OVERBOUGHT: f64 = 0.0;
 
 impl ChandeKrollStopStrategy {
     pub fn new(ctx: ComponentContext, config: ChandeKrollStopStrategyConfig) -> Self {
-        !todo!("Not implemented yet");
+        todo!("Not implemented yet");
         return ChandeKrollStopStrategy {
             ctx: ctx.clone(),
             cross_over: CrossOverThresholdComponent::new(ctx.clone(), config.threshold_oversold),

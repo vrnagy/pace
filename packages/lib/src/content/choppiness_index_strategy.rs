@@ -38,7 +38,7 @@ pub static CHOPPINESS_INDEX_STRATEGY_THRESHOLD_SIDEWAYS: f64 = 61.8;
 
 impl ChoppinessIndexStrategy {
     pub fn new(ctx: ComponentContext, config: ChoppinessIndexStrategyConfig) -> Self {
-        !todo!("Not implemented");
+        todo!("Not implemented");
         return ChoppinessIndexStrategy {
             ctx: ctx.clone(),
             config,
