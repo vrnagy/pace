@@ -18,5 +18,6 @@ mod relative_strength_index_strategy_test;
 mod relative_vigor_index_indicator_test;
 mod relative_volatility_index_indicator_test;
 mod stoch_relative_strength_index_indicator_test;
+mod ultimate_oscillator_indicator_test;
 mod volume_oscillator_indicator_test;
 mod vortex_indicator_test;

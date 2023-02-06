@@ -19,6 +19,7 @@ pub mod relative_strength_index_strategy;
 pub mod relative_vigor_index_indicator;
 pub mod relative_volatility_index_indicator;
 pub mod stoch_relative_volatility_index_indicator;
+pub mod ultimate_oscillator_indicator;
 pub mod volume_oscillator_indicator;
 pub mod vortex_indicator;
 
