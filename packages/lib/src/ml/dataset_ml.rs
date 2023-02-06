@@ -35,6 +35,10 @@ use crate::{
         bollinger_bands_pb_strategy::{
             BollingerBandsPercentBStrategy, BollingerBandsPercentBStrategyConfig,
         },
+        bollinger_bands_width_feature_builder::BollingerBandsWidthFeatureBuilder,
+        bollinger_bands_width_indicator::{
+            BollingerBandsWidthIndicator, BollingerBandsWidthIndicatorConfig,
+        },
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -91,6 +95,12 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut bbpb_fb = BollingerBandsPercentBFeatureBuilder::new(ctx.clone());
 
+    let mut bbw_indicator = BollingerBandsWidthIndicator::new(
+        ctx.clone(),
+        BollingerBandsWidthIndicatorConfig::default(ctx.clone()),
+    );
+    let mut bbw_fb = BollingerBandsWidthFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -133,15 +143,19 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         //     FeatureNamespace::new("bp", bp_fb.next(bp, bp_trade, &bp_strategy.config).to_box());
         // combined.push(bp_feat.to_box());
 
-        let bbpb = bbpb_indicator.next();
-        let bbpb_trade = bbpb_strategy.next(bbpb);
-        let bbpb_feat = FeatureNamespace::new(
-            "bbpb",
-            bbpb_fb
-                .next(bbpb, bbpb_trade, &bbpb_strategy.config)
-                .to_box(),
-        );
-        combined.push(bbpb_feat.to_box());
+        // let bbpb = bbpb_indicator.next();
+        // let bbpb_trade = bbpb_strategy.next(bbpb);
+        // let bbpb_feat = FeatureNamespace::new(
+        //     "bbpb",
+        //     bbpb_fb
+        //         .next(bbpb, bbpb_trade, &bbpb_strategy.config)
+        //         .to_box(),
+        // );
+        // combined.push(bbpb_feat.to_box());
+
+        let bbw = bbw_indicator.next();
+        let bbw_feat = FeatureNamespace::new("bbw", bbw_fb.next(bbw).to_box());
+        combined.push(bbw_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());

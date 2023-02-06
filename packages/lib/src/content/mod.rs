@@ -10,6 +10,7 @@ pub mod balance_of_power_strategy;
 pub mod bollinger_bands_pb_feature_builder;
 pub mod bollinger_bands_pb_indicator;
 pub mod bollinger_bands_pb_strategy;
+pub mod bollinger_bands_width_feature_builder;
 pub mod bollinger_bands_width_indicator;
 pub mod chaikin_money_flow_indicator;
 pub mod chande_kroll_stop_indicator;
