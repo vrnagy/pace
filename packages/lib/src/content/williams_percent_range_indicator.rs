@@ -29,6 +29,9 @@ pub struct WilliamsPercentRangeIndicator {
     lowest: LowestComponent,
 }
 
+pub static WILLIAMS_PERCENT_RANGE_MIN_VALUE: f64 = -100.0;
+pub static WILLIAMS_PERCENT_RANGE_MAX_VALUE: f64 = 0.0;
+
 impl WilliamsPercentRangeIndicator {
     pub fn new(ctx: ComponentContext, config: WilliamsPercentRangeIndicatorConfig) -> Self {
         return WilliamsPercentRangeIndicator {

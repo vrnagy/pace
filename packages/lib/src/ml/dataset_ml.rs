@@ -116,6 +116,13 @@ use crate::{
         vortex_feature_builder::VortexFeatureBuilder,
         vortex_indicator::{VortexIndicator, VortexIndicatorConfig},
         vortex_strategy::{self, VortexStrategy},
+        williams_percent_range_feature_builder::WilliamsPercentRangeFeatureBuilder,
+        williams_percent_range_indicator::{
+            WilliamsPercentRangeIndicator, WilliamsPercentRangeIndicatorConfig,
+        },
+        williams_percent_range_strategy::{
+            WilliamsPercentRangeStrategy, WilliamsPercentRangeStrategyConfig,
+        },
     },
 };
 
@@ -295,6 +302,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     let mut vortex_strategy = VortexStrategy::new(ctx.clone());
     let mut vortex_fb = VortexFeatureBuilder::new(ctx.clone());
 
+    let mut wpr_indicator = WilliamsPercentRangeIndicator::new(
+        ctx.clone(),
+        WilliamsPercentRangeIndicatorConfig::default(ctx.clone()),
+    );
+    let mut wpr_strategy = WilliamsPercentRangeStrategy::new(
+        ctx.clone(),
+        WilliamsPercentRangeStrategyConfig::default(ctx.clone()),
+    );
+    let mut wpr_fb = WilliamsPercentRangeFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -441,11 +458,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // let vo_feat = FeatureNamespace::new("vo", vo_fb.next(vo, vo_trade).to_box());
         // combined.push(vo_feat.to_box());
 
-        let vortex = vortex_indicator.next();
-        let vortex_trade = vortex_strategy.next(&vortex);
-        let vortex_feat =
-            FeatureNamespace::new("vortex", vortex_fb.next(&vortex, vortex_trade).to_box());
-        combined.push(vortex_feat.to_box());
+        // let vortex = vortex_indicator.next();
+        // let vortex_trade = vortex_strategy.next(&vortex);
+        // let vortex_feat =
+        //     FeatureNamespace::new("vortex", vortex_fb.next(&vortex, vortex_trade).to_box());
+        // combined.push(vortex_feat.to_box());
+
+        let wpr = wpr_indicator.next();
+        let wpr_trade = wpr_strategy.next(wpr);
+        let wpr_feat = FeatureNamespace::new("wpr", wpr_fb.next(wpr, wpr_trade).to_box());
+        combined.push(wpr_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());

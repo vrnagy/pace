@@ -60,6 +60,8 @@ pub mod volume_oscillator_strategy;
 pub mod vortex_feature_builder;
 pub mod vortex_indicator;
 pub mod vortex_strategy;
+pub mod williams_percent_range_feature_builder;
 pub mod williams_percent_range_indicator;
+pub mod williams_percent_range_strategy;
 
 mod tests;
