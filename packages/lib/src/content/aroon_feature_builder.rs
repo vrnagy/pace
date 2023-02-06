@@ -42,8 +42,8 @@ impl AroonFeatureBuilder {
     pub fn next(
         &mut self,
         aroon: &AroonIndicatorResult,
-        aroon_strategy_metadata: &AroonStrategyMetadata,
         aroon_trade: Option<TradeDirection>,
+        aroon_strategy_metadata: &AroonStrategyMetadata,
     ) -> AroonFeature {
         self.ctx.assert();
 

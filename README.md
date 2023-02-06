@@ -45,3 +45,4 @@ $ yarn install
 - https://www.tradingview.com/script/vTloluai-Hurst-Exponent-Detrended-Fluctuation-Analysis-pig/
 - https://deterministic.space/high-performance-rust.html
 - https://hal.science/hal-03142251/document
+- https://www.forrestthewoods.com/blog/should-small-rust-structs-be-passed-by-copy-or-by-borrow/

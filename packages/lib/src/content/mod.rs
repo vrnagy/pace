@@ -1,7 +1,9 @@
 pub mod aroon_feature_builder;
 pub mod aroon_indicator;
 pub mod aroon_strategy;
+pub mod awesome_oscillator_feature_builder;
 pub mod awesome_oscillator_indicator;
+pub mod awesome_oscillator_strategy;
 pub mod balance_of_power_indicator;
 pub mod bollinger_bands_pb_indicator;
 pub mod bollinger_bands_width_indicator;
@@ -21,8 +23,9 @@ pub mod relative_strength_index_strategy;
 pub mod relative_vigor_index_indicator;
 pub mod relative_volatility_index_indicator;
 pub mod stoch_relative_volatility_index_indicator;
-mod tests;
 pub mod ultimate_oscillator_indicator;
 pub mod volume_oscillator_indicator;
 pub mod vortex_indicator;
 pub mod williams_percent_range_indicator;
+
+mod tests;

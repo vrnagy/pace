@@ -18,6 +18,13 @@ use crate::{
         aroon_feature_builder::AroonFeatureBuilder,
         aroon_indicator::{AroonIndicator, AroonIndicatorConfig},
         aroon_strategy::AroonStrategy,
+        awesome_oscillator_feature_builder::{
+            AwesomeOscillatorFeature, AwesomeOscillatorFeatureBuilder,
+        },
+        awesome_oscillator_indicator::{
+            AwesomeOscillatorIndicator, AwesomeOscillatorIndicatorConfig,
+        },
+        awesome_oscillator_strategy::{AwesomeOscillatorStrategy, AwesomeOscillatorStrategyConfig},
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -47,36 +54,52 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     let mut aroon_strategy = AroonStrategy::new(ctx.clone());
     let mut aroon_fb = AroonFeatureBuilder::new(ctx.clone());
 
+    let mut ao_indicator = AwesomeOscillatorIndicator::new(
+        ctx.clone(),
+        AwesomeOscillatorIndicatorConfig::default(ctx.clone()),
+    );
+    let mut ao_strategy = AwesomeOscillatorStrategy::new(
+        ctx.clone(),
+        AwesomeOscillatorStrategyConfig::default(ctx.clone()),
+    );
+    let mut ao_fb = AwesomeOscillatorFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
         let mut combined = CombinedFeatures::new();
 
-        let rsi = rsi_indicator.next();
-        let rsi_trade = rsi_strategy.next(rsi);
-        let rsi_feat = FeatureNamespace::new(
-            "rsi",
-            rsi_fb
-                .next(
-                    rsi,
-                    rsi_indicator.metadata(),
-                    rsi_trade,
-                    &rsi_strategy.config,
-                )
-                .to_box(),
-        );
-
-        let aroon = aroon_indicator.next();
-        let aroon_trade = aroon_strategy.next(&aroon);
-        let aroon_feat = FeatureNamespace::new(
-            "aroon",
-            aroon_fb
-                .next(&aroon, aroon_strategy.metadata(), aroon_trade)
-                .to_box(),
-        );
-
+        // let rsi = rsi_indicator.next();
+        // let rsi_trade = rsi_strategy.next(rsi);
+        // let rsi_feat = FeatureNamespace::new(
+        //     "rsi",
+        //     rsi_fb
+        //         .next(
+        //             rsi,
+        //             rsi_indicator.metadata(),
+        //             rsi_trade,
+        //             &rsi_strategy.config,
+        //         )
+        //         .to_box(),
+        // );
         // combined.push(rsi_feat.to_box());
-        combined.push(aroon_feat.to_box());
+
+        // let aroon = aroon_indicator.next();
+        // let aroon_trade = aroon_strategy.next(&aroon);
+        // let aroon_feat = FeatureNamespace::new(
+        //     "aroon",
+        //     aroon_fb
+        //         .next(&aroon, aroon_strategy.metadata(), aroon_trade)
+        //         .to_box(),
+        // );
+        // combined.push(aroon_feat.to_box());
+
+        let ao = ao_indicator.next();
+        let ao_trade = ao_strategy.next(ao);
+        let ao_feat =
+            FeatureNamespace::new("ao", ao_fb.next(ao, ao_trade, &ao_strategy.config).to_box());
+        combined.push(ao_feat.to_box());
+
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());
     }
