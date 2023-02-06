@@ -6,7 +6,7 @@ use polars::prelude::DataFrame;
 use crate::{
     base::{
         asset::timeframe::Timeframe,
-        strategy::{action::StrategyActionKind, polars::SeriesCastUtilsForStrategy},
+        strategy::{action::TradeDirection, polars::SeriesCastUtilsForStrategy},
     },
     utils::{comparison::FloatComparison, csv::read_csv, polars::SeriesCastUtils},
 };
@@ -50,9 +50,9 @@ impl Fixture {
         return Self::load_with_target(path, "_target_");
     }
 
-    pub fn strategy(path: &str) -> (DataFrame, ComponentContext, Vec<Option<StrategyActionKind>>) {
+    pub fn strategy(path: &str) -> (DataFrame, ComponentContext, Vec<Option<TradeDirection>>) {
         let (df, ctx) = Self::raw(path);
-        let values = df.column("_target_").unwrap().to_strategy_action();
+        let values = df.column("_target_").unwrap().to_trade();
         return (df, ctx, values);
     }
 }
@@ -151,8 +151,8 @@ impl ComponentTestSnapshot<f64> {
     }
 }
 
-impl ComponentTestSnapshot<StrategyActionKind> {
-    pub fn assert(&self, expected: &[Option<StrategyActionKind>]) {
+impl ComponentTestSnapshot<TradeDirection> {
+    pub fn assert(&self, expected: &[Option<TradeDirection>]) {
         self.assert_iter(expected, |actual, expected| {
             return actual == expected;
         })

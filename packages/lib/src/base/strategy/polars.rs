@@ -7,27 +7,20 @@ use polars::{
 
 use crate::utils::polars::SeriesCastUtils;
 
-use super::action::StrategyActionKind;
+use super::action::{trade_direction_from_f64, TradeDirection};
 
 pub trait SeriesCastUtilsForStrategy {
-    fn to_strategy_action(&self) -> Vec<Option<StrategyActionKind>>;
+    fn to_trade(&self) -> Vec<Option<TradeDirection>>;
 }
 
 impl SeriesCastUtilsForStrategy for Series {
-    fn to_strategy_action(&self) -> Vec<Option<StrategyActionKind>> {
+    fn to_trade(&self) -> Vec<Option<TradeDirection>> {
         return self
             .to_f64()
             .into_iter()
             .map(|value| {
                 value?;
-                let value = value.unwrap();
-                if value == 1.0 {
-                    return Some(StrategyActionKind::Long);
-                }
-                if value == -1.0 {
-                    return Some(StrategyActionKind::Short);
-                }
-                return Some(StrategyActionKind::None);
+                return trade_direction_from_f64(value);
             })
             .collect::<Vec<_>>();
     }

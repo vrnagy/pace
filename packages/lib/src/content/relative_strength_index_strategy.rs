@@ -1,6 +1,6 @@
 use crate::base::{
     components::{component_context::ComponentContext, component_default::ComponentDefault},
-    strategy::action::StrategyActionKind,
+    strategy::action::TradeDirection,
     ta::{
         cross::CrossMode, cross_component::CrossComponent,
         rsi_component::RelativeStrengthIndexComponentMetadata,
@@ -43,7 +43,7 @@ impl RelativeStrengthIndexStrategy {
         };
     }
 
-    pub fn next(&mut self, rsi: Option<f64>) -> StrategyActionKind {
+    pub fn next(&mut self, rsi: Option<f64>) -> Option<TradeDirection> {
         self.ctx.assert();
 
         let is_cross_over = self
@@ -55,11 +55,11 @@ impl RelativeStrengthIndexStrategy {
             .next(rsi, Some(self.config.threshold_overbought));
 
         let result = if is_cross_over {
-            StrategyActionKind::Long
+            Some(TradeDirection::Long)
         } else if is_cross_under {
-            StrategyActionKind::Short
+            Some(TradeDirection::Short)
         } else {
-            StrategyActionKind::None
+            None
         };
 
         return result;

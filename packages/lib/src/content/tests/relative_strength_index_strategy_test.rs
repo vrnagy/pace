@@ -7,7 +7,7 @@ mod tests {
                 component_context::ComponentContext,
                 testing::{ComponentTestSnapshot, Fixture},
             },
-            strategy::action::StrategyActionKind,
+            strategy::action::TradeDirection,
         },
         content::{
             relative_strength_index_indicator::{
@@ -31,13 +31,13 @@ mod tests {
         cctx: &mut ComponentContext,
         target: &mut RelativeStrengthIndexStrategy,
         target_indicator: &mut RelativeStrengthIndexIndicator,
-        expected: &[Option<StrategyActionKind>],
+        expected: &[Option<TradeDirection>],
     ) {
-        let mut snapshot = ComponentTestSnapshot::<StrategyActionKind>::new();
+        let mut snapshot = ComponentTestSnapshot::<TradeDirection>::new();
         for cctx in cctx {
             let output_indicator = target_indicator.next();
             let output = target.next(output_indicator);
-            snapshot.push(Some(output));
+            snapshot.push(output);
         }
         snapshot.assert(expected);
     }

@@ -4,7 +4,7 @@ use crate::base::{
     components::component_context::ComponentContext,
     features::{feature::Feature, feature_regions::FeatureTernaryTrendRegions},
     statistics::scale_value_min_max,
-    strategy::action::StrategyActionKind,
+    strategy::action::TradeDirection,
     ta::rsi_component::{RelativeStrengthIndexComponentMetadata, RSI_MAX_VALUE, RSI_MIN_VALUE},
 };
 
@@ -36,7 +36,7 @@ impl RelativeStrengthIndexFeatureBuilder {
         &mut self,
         rsi: Option<f64>,
         rsi_metadata: &RelativeStrengthIndexComponentMetadata,
-        rsi_strategy_action: StrategyActionKind,
+        rsi_trade: Option<TradeDirection>,
         rsi_strategy_config: &RelativeStrengthIndexStrategyConfig,
     ) -> RelativeStrengthIndexFeature {
         self.ctx.assert();
