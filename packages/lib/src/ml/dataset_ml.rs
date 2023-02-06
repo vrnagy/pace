@@ -67,6 +67,9 @@ use crate::{
         connors_relative_strength_index_strategy::{
             ConnorsRelativeStrengthIndexStrategy, ConnorsRelativeStrengthIndexStrategyConfig,
         },
+        coppock_curve_feature_builder::CoppockCurveFeatureBuilder,
+        coppock_curve_indicator::{CoppockCurveIndicator, CoppockCurveIndicatorConfig},
+        coppock_curve_strategy::{CoppockCurveStrategy, CoppockCurveStrategyConfig},
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -175,6 +178,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut connors_rsi_fb = ConnorsRelativeStrengthIndexFeatureBuilder::new(ctx.clone());
 
+    let mut cc_indicator = CoppockCurveIndicator::new(
+        ctx.clone(),
+        CoppockCurveIndicatorConfig::default(ctx.clone()),
+    );
+    let mut cc_strategy = CoppockCurveStrategy::new(
+        ctx.clone(),
+        CoppockCurveStrategyConfig::default(ctx.clone()),
+    );
+    let mut cc_fb = CoppockCurveFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -259,15 +272,21 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // );
         // combined.push(cci_feat.to_box());
 
-        let connors_rsi = connors_rsi_indicator.next();
-        let connors_rsi_trade = connors_rsi_strategy.next(connors_rsi);
-        let connors_rsi_feat = FeatureNamespace::new(
-            "connors_rsi",
-            connors_rsi_fb
-                .next(connors_rsi, connors_rsi_trade, &connors_rsi_strategy.config)
-                .to_box(),
-        );
-        combined.push(connors_rsi_feat.to_box());
+        // let connors_rsi = connors_rsi_indicator.next();
+        // let connors_rsi_trade = connors_rsi_strategy.next(connors_rsi);
+        // let connors_rsi_feat = FeatureNamespace::new(
+        //     "connors_rsi",
+        //     connors_rsi_fb
+        //         .next(connors_rsi, connors_rsi_trade, &connors_rsi_strategy.config)
+        //         .to_box(),
+        // );
+        // combined.push(connors_rsi_feat.to_box());
+
+        let cc = cc_indicator.next();
+        let cc_trade = cc_strategy.next(cc);
+        let cc_feat =
+            FeatureNamespace::new("cc", cc_fb.next(cc, cc_trade, &cc_strategy.config).to_box());
+        combined.push(cc_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());
