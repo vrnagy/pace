@@ -19,7 +19,7 @@ pub fn find_max_index(arr: &[Option<f64>]) -> usize {
         }
     }
     if max_value_index.is_none() {
-        panic!("max_value_index is None");
+        max_value_index = Some(arr.len() - 1);
     }
 
     return max_value_index.unwrap();
@@ -46,7 +46,7 @@ pub fn find_min_index(arr: &[Option<f64>]) -> usize {
         }
     }
     if max_value_index.is_none() {
-        panic!("max_value_index is None");
+        max_value_index = Some(arr.len() - 1);
     }
 
     return max_value_index.unwrap();

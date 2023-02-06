@@ -1,6 +1,11 @@
 use crate::base::{
     components::{component_context::ComponentContext, component_default::ComponentDefault},
-    ta::bars::{compute_highest, compute_lowest},
+    pinescript::utils::{ps_add, ps_diff},
+    ta::{
+        bars::{compute_highest, compute_lowest},
+        highest_component::HighestComponent,
+        lowest_component::LowestComponent,
+    },
 };
 
 pub struct DonchianChannelsIndicatorConfig {
@@ -22,12 +27,16 @@ pub struct DonchianChannelsIndicatorResult {
 pub struct DonchianChannelsIndicator {
     pub config: DonchianChannelsIndicatorConfig,
     ctx: ComponentContext,
+    highest: HighestComponent,
+    lowest: LowestComponent,
 }
 
 impl DonchianChannelsIndicator {
     pub fn new(ctx: ComponentContext, config: DonchianChannelsIndicatorConfig) -> Self {
         return DonchianChannelsIndicator {
             ctx: ctx.clone(),
+            highest: HighestComponent::new(ctx.clone(), config.length),
+            lowest: LowestComponent::new(ctx.clone(), config.length),
             config,
         };
     }
@@ -36,20 +45,10 @@ impl DonchianChannelsIndicator {
         self.ctx.assert();
         let ctx = self.ctx.get();
 
-        if (!ctx.at_length(self.config.length)) {
-            return DonchianChannelsIndicatorResult {
-                upper: None,
-                basis: None,
-                lower: None,
-            };
-        }
+        let upper = self.highest.next(ctx.high());
+        let lower = self.lowest.next(ctx.low());
 
-        let upper = compute_highest(ctx.prev_highs(self.config.length));
-        let lower = compute_lowest(ctx.prev_lows(self.config.length));
-        let basis = match (upper, lower) {
-            (Some(upper), Some(lower)) => Some((upper + lower) / 2.0),
-            _ => None,
-        };
+        let basis = ps_add(upper, lower).map(|x| x / 2.0);
 
         return DonchianChannelsIndicatorResult {
             upper,

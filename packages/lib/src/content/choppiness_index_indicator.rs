@@ -1,8 +1,11 @@
 use crate::base::{
     components::{component_context::ComponentContext, component_default::ComponentDefault},
+    pinescript::utils::{ps_diff, ps_div},
     ta::{
         atr_component::AverageTrueRangeComponent,
         bars::{compute_highest, compute_lowest},
+        highest_component::HighestComponent,
+        lowest_component::LowestComponent,
         sum_component::SumComponent,
     },
 };
@@ -23,6 +26,8 @@ pub struct ChoppinessIndexIndicator {
     atr: AverageTrueRangeComponent,
     atr_sum: SumComponent,
     log10_length: f64,
+    highest: HighestComponent,
+    lowest: LowestComponent,
 }
 
 impl ChoppinessIndexIndicator {
@@ -32,6 +37,8 @@ impl ChoppinessIndexIndicator {
             atr: AverageTrueRangeComponent::new(ctx.clone(), 1),
             atr_sum: SumComponent::new(ctx.clone(), config.length),
             log10_length: f64::log10(config.length as f64),
+            highest: HighestComponent::new(ctx.clone(), config.length),
+            lowest: LowestComponent::new(ctx.clone(), config.length),
             config,
         };
     }
@@ -43,20 +50,16 @@ impl ChoppinessIndexIndicator {
         let atr = self.atr.next();
         let atr_sum = self.atr_sum.next(atr);
 
-        if (atr_sum.is_none() || !ctx.at_length(self.config.length)) {
-            return None;
-        }
+        let highest = self.highest.next(ctx.high());
+        let lowest = self.lowest.next(ctx.low());
 
-        let highest = compute_highest(ctx.prev_highs(self.config.length));
-        let lowest = compute_lowest(ctx.prev_lows(self.config.length));
-
-        let chop: Option<f64> = match (highest, lowest) {
-            (Some(highest), Some(lowest)) => {
+        let chop: Option<f64> = match (atr_sum, highest, lowest) {
+            (Some(atr_sum), Some(highest), Some(lowest)) => {
                 let diff = highest - lowest;
                 if diff == 0.0 {
                     None
                 } else {
-                    Some(100.0 * f64::log10(atr_sum.unwrap() / diff) / self.log10_length)
+                    Some(100.0 * f64::log10(atr_sum / diff) / self.log10_length)
                 }
             }
             _ => None,

@@ -25,6 +25,13 @@ pub fn ps_diff(value: Option<f64>, prev_value: Option<f64>) -> Option<f64> {
     }
 }
 
+pub fn ps_add(a: Option<f64>, b: Option<f64>) -> Option<f64> {
+    match (a, b) {
+        (Some(a), Some(b)) => Some(a + b),
+        _ => None,
+    }
+}
+
 pub fn ps_div(numerator: Option<f64>, denominator: Option<f64>) -> Option<f64> {
     match (numerator, denominator) {
         (Some(numerator), Some(denominator)) => {
