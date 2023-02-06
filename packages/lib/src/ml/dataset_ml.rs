@@ -39,6 +39,11 @@ use crate::{
         bollinger_bands_width_indicator::{
             BollingerBandsWidthIndicator, BollingerBandsWidthIndicatorConfig,
         },
+        chaikin_money_flow_feature_builder::ChaikinMoneyFlowFeatureBuilder,
+        chaikin_money_flow_indicator::{
+            ChaikinMoneyFlowIndicator, ChaikinMoneyFlowIndicatorConfig,
+        },
+        chaikin_money_flow_strategy::{ChaikinMoneyFlowStrategy, ChaikinMoneyFlowStrategyConfig},
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -101,6 +106,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut bbw_fb = BollingerBandsWidthFeatureBuilder::new(ctx.clone());
 
+    let mut cmf_indicator = ChaikinMoneyFlowIndicator::new(
+        ctx.clone(),
+        ChaikinMoneyFlowIndicatorConfig::default(ctx.clone()),
+    );
+    let mut cmf_strategy = ChaikinMoneyFlowStrategy::new(
+        ctx.clone(),
+        ChaikinMoneyFlowStrategyConfig::default(ctx.clone()),
+    );
+    let mut cmf_fb = ChaikinMoneyFlowFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -153,9 +168,17 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // );
         // combined.push(bbpb_feat.to_box());
 
-        let bbw = bbw_indicator.next();
-        let bbw_feat = FeatureNamespace::new("bbw", bbw_fb.next(bbw).to_box());
-        combined.push(bbw_feat.to_box());
+        // let bbw = bbw_indicator.next();
+        // let bbw_feat = FeatureNamespace::new("bbw", bbw_fb.next(bbw).to_box());
+        // combined.push(bbw_feat.to_box());
+
+        let cmf = cmf_indicator.next();
+        let cmf_trade = cmf_strategy.next(cmf);
+        let cmf_feat = FeatureNamespace::new(
+            "cmf",
+            cmf_fb.next(cmf, cmf_trade, &cmf_strategy.config).to_box(),
+        );
+        combined.push(cmf_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());
