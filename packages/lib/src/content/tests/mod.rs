@@ -21,3 +21,4 @@ mod stoch_relative_strength_index_indicator_test;
 mod ultimate_oscillator_indicator_test;
 mod volume_oscillator_indicator_test;
 mod vortex_indicator_test;
+mod williams_percent_range_indicator_test;

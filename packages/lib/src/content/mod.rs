@@ -22,5 +22,6 @@ pub mod stoch_relative_volatility_index_indicator;
 pub mod ultimate_oscillator_indicator;
 pub mod volume_oscillator_indicator;
 pub mod vortex_indicator;
+pub mod williams_percent_range_indicator;
 
 mod tests;
