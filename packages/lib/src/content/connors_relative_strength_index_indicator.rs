@@ -37,6 +37,9 @@ pub struct ConnorsRelativeStrengthIndexIndicator {
     roc: RateOfChangeComponent,
 }
 
+pub static CONNORS_RELATIVE_STRENGTH_INDEX_MIN_VALUE: f64 = 0.0;
+pub static CONNORS_RELATIVE_STRENGTH_INDEX_MAX_VALUE: f64 = 100.0;
+
 impl ConnorsRelativeStrengthIndexIndicator {
     pub fn new(ctx: ComponentContext, config: ConnorsRelativeStrengthIndexIndicatorConfig) -> Self {
         return ConnorsRelativeStrengthIndexIndicator {

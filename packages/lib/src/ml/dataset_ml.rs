@@ -60,6 +60,13 @@ use crate::{
         commodity_channel_index_strategy::{
             CommodityChannelIndexStrategy, CommodityChannelIndexStrategyConfig,
         },
+        connors_relative_strength_index_feature_builder::ConnorsRelativeStrengthIndexFeatureBuilder,
+        connors_relative_strength_index_indicator::{
+            ConnorsRelativeStrengthIndexIndicator, ConnorsRelativeStrengthIndexIndicatorConfig,
+        },
+        connors_relative_strength_index_strategy::{
+            ConnorsRelativeStrengthIndexStrategy, ConnorsRelativeStrengthIndexStrategyConfig,
+        },
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -158,6 +165,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut cci_fb = CommodityChannelIndexFeatureBuilder::new(ctx.clone());
 
+    let mut connors_rsi_indicator = ConnorsRelativeStrengthIndexIndicator::new(
+        ctx.clone(),
+        ConnorsRelativeStrengthIndexIndicatorConfig::default(ctx.clone()),
+    );
+    let mut connors_rsi_strategy = ConnorsRelativeStrengthIndexStrategy::new(
+        ctx.clone(),
+        ConnorsRelativeStrengthIndexStrategyConfig::default(ctx.clone()),
+    );
+    let mut connors_rsi_fb = ConnorsRelativeStrengthIndexFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -234,13 +251,23 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // let ci_feat = FeatureNamespace::new("ci", ci_fb.next(ci).to_box());
         // combined.push(ci_feat.to_box());
 
-        let cci = cci_indicator.next();
-        let cci_trade = cci_strategy.next(cci);
-        let cci_feat = FeatureNamespace::new(
-            "cci",
-            cci_fb.next(cci, cci_trade, &cci_strategy.config).to_box(),
+        // let cci = cci_indicator.next();
+        // let cci_trade = cci_strategy.next(cci);
+        // let cci_feat = FeatureNamespace::new(
+        //     "cci",
+        //     cci_fb.next(cci, cci_trade, &cci_strategy.config).to_box(),
+        // );
+        // combined.push(cci_feat.to_box());
+
+        let connors_rsi = connors_rsi_indicator.next();
+        let connors_rsi_trade = connors_rsi_strategy.next(connors_rsi);
+        let connors_rsi_feat = FeatureNamespace::new(
+            "connors_rsi",
+            connors_rsi_fb
+                .next(connors_rsi, connors_rsi_trade, &connors_rsi_strategy.config)
+                .to_box(),
         );
-        combined.push(cci_feat.to_box());
+        combined.push(connors_rsi_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());

@@ -4,7 +4,7 @@ use crate::base::{
     components::component_context::ComponentContext,
     features::{feature::Feature, feature_regions::FeatureTernaryTrendRegions},
     statistics::scale_value_min_max,
-    strategy::action::TradeDirection,
+    strategy::action::{trade_direction_to_f64, TradeDirection},
     ta::rsi_component::{RelativeStrengthIndexComponentMetadata, RSI_MAX_VALUE, RSI_MIN_VALUE},
 };
 
@@ -15,6 +15,7 @@ use super::relative_strength_index_strategy::{
 pub struct RelativeStrengthIndexFeature {
     pub raw: Option<f64>,
     pub main: Option<f64>,
+    pub trend: Option<f64>,
 }
 
 impl Feature for RelativeStrengthIndexFeature {
@@ -22,6 +23,7 @@ impl Feature for RelativeStrengthIndexFeature {
         let mut map = HashMap::from([
             (String::from("raw"), self.raw),
             (String::from("main"), self.main),
+            (String::from("trend"), self.trend),
         ]);
         return map;
     }
@@ -49,6 +51,7 @@ impl RelativeStrengthIndexFeatureBuilder {
             main: rsi.map(|value| {
                 return scale_value_min_max(value, min, max);
             }),
+            trend: Some(trade_direction_to_f64(rsi_trade)),
         };
     }
 }

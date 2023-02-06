@@ -8,7 +8,7 @@ mod tests {
                 testing::{ComponentTestSnapshot, Fixture},
             },
         },
-        content::connors_relative_volatility_index_indicator::{
+        content::connors_relative_strength_index_indicator::{
             ConnorsRelativeStrengthIndexIndicator, ConnorsRelativeStrengthIndexIndicatorConfig,
         },
     };
