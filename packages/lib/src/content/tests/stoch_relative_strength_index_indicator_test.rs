@@ -8,7 +8,7 @@ mod tests {
                 testing::{ComponentTestSnapshot, Fixture},
             },
         },
-        content::stoch_relative_volatility_index_indicator::{
+        content::stoch_relative_strength_index_indicator::{
             StochRelativeStrengthIndexIndicator, StochRelativeStrengthIndexIndicatorConfig,
         },
         utils::polars::DataFrameUtils,

@@ -99,6 +99,13 @@ use crate::{
         relative_volatility_index_strategy::{
             RelativeVolatilityIndexStrategy, RelativeVolatilityIndexStrategyConfig,
         },
+        stoch_relative_strength_index_feature_builder::StochRelativeStrengthIndexFeatureBuilder,
+        stoch_relative_strength_index_indicator::{
+            StochRelativeStrengthIndexIndicator, StochRelativeStrengthIndexIndicatorConfig,
+        },
+        stoch_relative_strength_index_strategy::{
+            StochRelativeStrengthIndexStrategy, StochRelativeStrengthIndexStrategyConfig,
+        },
     },
 };
 
@@ -247,6 +254,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut rvi_fb = RelativeVolatilityIndexFeatureBuilder::new(ctx.clone());
 
+    let mut stoch_rsi_indicator = StochRelativeStrengthIndexIndicator::new(
+        ctx.clone(),
+        StochRelativeStrengthIndexIndicatorConfig::default(ctx.clone()),
+    );
+    let mut stoch_rsi_strategy = StochRelativeStrengthIndexStrategy::new(
+        ctx.clone(),
+        StochRelativeStrengthIndexStrategyConfig::default(ctx.clone()),
+    );
+    let mut stoch_rsi_fb = StochRelativeStrengthIndexFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -366,13 +383,23 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // let rvgi_feat = FeatureNamespace::new("rvgi", rvgi_fb.next(&rvgi, rvgi_trade).to_box());
         // combined.push(rvgi_feat.to_box());
 
-        let rvi = rvi_indicator.next();
-        let rvi_trade = rvi_strategy.next(rvi);
-        let rvi_feat = FeatureNamespace::new(
-            "rvi",
-            rvi_fb.next(rvi, rvi_trade, &rvi_strategy.config).to_box(),
+        // let rvi = rvi_indicator.next();
+        // let rvi_trade = rvi_strategy.next(rvi);
+        // let rvi_feat = FeatureNamespace::new(
+        //     "rvi",
+        //     rvi_fb.next(rvi, rvi_trade, &rvi_strategy.config).to_box(),
+        // );
+        // combined.push(rvi_feat.to_box());
+
+        let stoch_rsi = stoch_rsi_indicator.next();
+        let stoch_rsi_trade = stoch_rsi_strategy.next(&stoch_rsi);
+        let stoch_rsi_feat = FeatureNamespace::new(
+            "stoch_rsi",
+            stoch_rsi_fb
+                .next(&stoch_rsi, stoch_rsi_trade, &stoch_rsi_strategy.config)
+                .to_box(),
         );
-        combined.push(rvi_feat.to_box());
+        combined.push(stoch_rsi_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());
