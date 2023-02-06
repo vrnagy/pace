@@ -20,7 +20,7 @@ mod utils;
 
 fn generate_ml_dataset() {
     let (df, ctx) = Fixture::raw("ml/fixtures/btc_1d.csv");
-    ml::dataset_ml::generate_ml_dataset(ctx, Path::new(".out/dataset_ml.csv"));
+    ml::dataset_ml::generate_ml_dataset(ctx, Path::new(".out/ddxataset_ml.csv"));
     println!("[process] exit");
 }
 

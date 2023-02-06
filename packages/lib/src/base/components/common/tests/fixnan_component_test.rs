@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use std::rc::Rc;
+    use std::{rc::Rc, sync::Arc};
 
     use crate::base::{
         asset::in_memory_asset_data_provider::InMemoryAssetDataProvider,
@@ -23,7 +23,7 @@ mod tests {
 
     #[test]
     fn all_non_nan() {
-        let ctx = ComponentContext::build(ExecutionContext::from_asset(Rc::from(
+        let ctx = ComponentContext::build(ExecutionContext::from_asset(Arc::from(
             InMemoryAssetDataProvider::from_values(Vec::from([
                 Some(1.0),
                 Some(2.0),
@@ -54,7 +54,7 @@ mod tests {
 
     #[test]
     fn all_nan() {
-        let ctx = ComponentContext::build(ExecutionContext::from_asset(Rc::from(
+        let ctx = ComponentContext::build(ExecutionContext::from_asset(Arc::from(
             InMemoryAssetDataProvider::from_values(Vec::from([
                 None, None, None, None, None, None, None, None,
             ])),
@@ -69,7 +69,7 @@ mod tests {
 
     #[test]
     fn mixed() {
-        let ctx = ComponentContext::build(ExecutionContext::from_asset(Rc::from(
+        let ctx = ComponentContext::build(ExecutionContext::from_asset(Arc::from(
             InMemoryAssetDataProvider::from_values(Vec::from([
                 None,
                 None,

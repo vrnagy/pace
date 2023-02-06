@@ -1,4 +1,4 @@
-use std::{rc::Rc, time::Duration};
+use std::{rc::Rc, sync::Arc, time::Duration};
 
 use super::{
     asset::asset_data_provider::AssetDataProvider,
@@ -6,7 +6,7 @@ use super::{
 };
 
 pub struct ExecutionContext {
-    pub asset_data_provider: Rc<dyn AssetDataProvider + 'static>,
+    pub asset_data_provider: Arc<dyn AssetDataProvider + 'static + Send + Sync>,
     pub current_tick: usize,
     start_tick: usize,
     end_tick: usize,
@@ -15,7 +15,7 @@ pub struct ExecutionContext {
 
 impl ExecutionContext {
     pub fn new(
-        asset_data_provider: Rc<dyn AssetDataProvider + 'static>,
+        asset_data_provider: Arc<dyn AssetDataProvider + 'static + Send + Sync>,
         start_tick: usize,
         end_tick: usize,
     ) -> Self {
@@ -28,7 +28,9 @@ impl ExecutionContext {
         };
     }
 
-    pub fn from_asset(asset_data_provider: Rc<dyn AssetDataProvider + 'static>) -> Self {
+    pub fn from_asset(
+        asset_data_provider: Arc<dyn AssetDataProvider + 'static + Send + Sync>,
+    ) -> Self {
         let start_tick = asset_data_provider.get_start_tick();
         let end_tick = asset_data_provider.get_end_tick();
         return ExecutionContext {

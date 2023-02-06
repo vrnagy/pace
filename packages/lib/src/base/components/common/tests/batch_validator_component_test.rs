@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use std::rc::Rc;
+    use std::{rc::Rc, sync::Arc};
 
     use crate::base::{
         asset::in_memory_asset_data_provider::InMemoryAssetDataProvider,
@@ -26,7 +26,7 @@ mod tests {
 
     #[test]
     fn length_1() {
-        let ctx = ComponentContext::build(ExecutionContext::from_asset(Rc::from(
+        let ctx = ComponentContext::build(ExecutionContext::from_asset(Arc::from(
             InMemoryAssetDataProvider::from_values(Vec::from([
                 Some(1.0),
                 Some(2.0),
@@ -57,7 +57,7 @@ mod tests {
 
     #[test]
     fn length_5() {
-        let ctx = ComponentContext::build(ExecutionContext::from_asset(Rc::from(
+        let ctx = ComponentContext::build(ExecutionContext::from_asset(Arc::from(
             InMemoryAssetDataProvider::from_values(Vec::from([
                 Some(1.0),
                 Some(2.0),
@@ -88,7 +88,7 @@ mod tests {
 
     #[test]
     fn length_1_and_none() {
-        let ctx = ComponentContext::build(ExecutionContext::from_asset(Rc::from(
+        let ctx = ComponentContext::build(ExecutionContext::from_asset(Arc::from(
             InMemoryAssetDataProvider::from_values(Vec::from([
                 None,
                 Some(2.0),
@@ -119,7 +119,7 @@ mod tests {
 
     #[test]
     fn length_3_and_none() {
-        let ctx = ComponentContext::build(ExecutionContext::from_asset(Rc::from(
+        let ctx = ComponentContext::build(ExecutionContext::from_asset(Arc::from(
             InMemoryAssetDataProvider::from_values(Vec::from([
                 None,
                 None,
@@ -150,7 +150,7 @@ mod tests {
 
     #[test]
     fn _length_3_and_none_mixed() {
-        let ctx = ComponentContext::build(ExecutionContext::from_asset(Rc::from(
+        let ctx = ComponentContext::build(ExecutionContext::from_asset(Arc::from(
             InMemoryAssetDataProvider::from_values(Vec::from([
                 None,
                 None,

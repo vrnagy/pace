@@ -63,7 +63,7 @@ jobs:
           prefix-key: "rust-cache"
 
       - name: Lint
-        run: yarn lint
+        run: cargo fmt --all -- --check && cargo clippy -- -D warnings
 
       - name: Test
-        run: yarn test
+        run: cargo nextest run
