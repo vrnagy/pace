@@ -34,6 +34,15 @@ pub fn scale_value_around_mean(value: f64, mean: f64) -> f64 {
 }
 
 pub fn scale_value_min_max(value: f64, min: f64, max: f64) -> f64 {
+    let mut value = value;
+    let mut min = min;
+    let mut max = max;
+    if min < 0.0 {
+        let offset = min.abs();
+        min = 0.0;
+        max += offset;
+        value += offset;
+    }
     let mean = max - min;
     return scale_value_around_mean(value, mean);
 }

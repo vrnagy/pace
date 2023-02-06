@@ -53,6 +53,13 @@ use crate::{
         },
         choppiness_index_feature_builder::ChoppinessIndexFeatureBuilder,
         choppiness_index_indicator::{ChoppinessIndexIndicator, ChoppinessIndexIndicatorConfig},
+        commodity_channel_index_feature_builder::CommodityChannelIndexFeatureBuilder,
+        commodity_channel_index_indicator::{
+            CommodityChannelIndexIndicator, CommodityChannelIndexIndicatorConfig,
+        },
+        commodity_channel_index_strategy::{
+            CommodityChannelIndexStrategy, CommodityChannelIndexStrategyConfig,
+        },
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -141,6 +148,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut ci_fb = ChoppinessIndexFeatureBuilder::new(ctx.clone());
 
+    let mut cci_indicator = CommodityChannelIndexIndicator::new(
+        ctx.clone(),
+        CommodityChannelIndexIndicatorConfig::default(ctx.clone()),
+    );
+    let mut cci_strategy = CommodityChannelIndexStrategy::new(
+        ctx.clone(),
+        CommodityChannelIndexStrategyConfig::default(ctx.clone()),
+    );
+    let mut cci_fb = CommodityChannelIndexFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -213,9 +230,17 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // );
         // combined.push(cmo_feat.to_box());
 
-        let ci = ci_indicator.next();
-        let ci_feat = FeatureNamespace::new("ci", ci_fb.next(ci).to_box());
-        combined.push(ci_feat.to_box());
+        // let ci = ci_indicator.next();
+        // let ci_feat = FeatureNamespace::new("ci", ci_fb.next(ci).to_box());
+        // combined.push(ci_feat.to_box());
+
+        let cci = cci_indicator.next();
+        let cci_trade = cci_strategy.next(cci);
+        let cci_feat = FeatureNamespace::new(
+            "cci",
+            cci_fb.next(cci, cci_trade, &cci_strategy.config).to_box(),
+        );
+        combined.push(cci_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());
