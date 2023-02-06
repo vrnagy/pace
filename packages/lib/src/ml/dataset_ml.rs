@@ -77,6 +77,9 @@ use crate::{
         directional_movement_index_strategy::{
             DirectionalMovementIndexStrategy, DirectionalMovementIndexStrategyConfig,
         },
+        price_oscillator_feature_builder::PriceOscillatorFeatureBuilder,
+        price_oscillator_indicator::{PriceOscillatorIndicator, PriceOscillatorIndicatorConfig},
+        price_oscillator_strategy::{PriceOscillatorStrategy, PriceOscillatorStrategyConfig},
         relative_strength_index_feature_builder::RelativeStrengthIndexFeatureBuilder,
         relative_strength_index_indicator::{
             RelativeStrengthIndexIndicator, RelativeStrengthIndexIndicatorConfig,
@@ -205,6 +208,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut dmi_fb = DirectionalMovementIndexFeatureBuilder::new(ctx.clone());
 
+    let mut po_indicator = PriceOscillatorIndicator::new(
+        ctx.clone(),
+        PriceOscillatorIndicatorConfig::default(ctx.clone()),
+    );
+    let mut po_strategy = PriceOscillatorStrategy::new(
+        ctx.clone(),
+        PriceOscillatorStrategyConfig::default(ctx.clone()),
+    );
+    let mut po_fb = PriceOscillatorFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -305,13 +318,19 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         //     FeatureNamespace::new("cc", cc_fb.next(cc, cc_trade, &cc_strategy.config).to_box());
         // combined.push(cc_feat.to_box());
 
-        let dmi = dmi_indicator.next();
-        let dmi_trade = dmi_strategy.next(&dmi);
-        let dmi_feat = FeatureNamespace::new(
-            "dmi",
-            dmi_fb.next(&dmi, dmi_trade, &dmi_strategy.config).to_box(),
-        );
-        combined.push(dmi_feat.to_box());
+        // let dmi = dmi_indicator.next();
+        // let dmi_trade = dmi_strategy.next(&dmi);
+        // let dmi_feat = FeatureNamespace::new(
+        //     "dmi",
+        //     dmi_fb.next(&dmi, dmi_trade, &dmi_strategy.config).to_box(),
+        // );
+        // combined.push(dmi_feat.to_box());
+
+        let po = po_indicator.next();
+        let po_trade = po_strategy.next(po);
+        let po_feat =
+            FeatureNamespace::new("po", po_fb.next(po, po_trade, &po_strategy.config).to_box());
+        combined.push(po_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());
