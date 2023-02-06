@@ -87,6 +87,11 @@ use crate::{
         relative_strength_index_strategy::{
             RelativeStrengthIndexStrategy, RelativeStrengthIndexStrategyConfig,
         },
+        relative_vigor_index_feature_builder::RelativeVigorIndexFeatureBuilder,
+        relative_vigor_index_indicator::{
+            RelativeVigorIndexIndicator, RelativeVigorIndexIndicatorConfig,
+        },
+        relative_vigor_index_strategy::RelativeVigorIndexStrategy,
     },
 };
 
@@ -218,6 +223,13 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
     );
     let mut po_fb = PriceOscillatorFeatureBuilder::new(ctx.clone());
 
+    let mut rvgi_indicator = RelativeVigorIndexIndicator::new(
+        ctx.clone(),
+        RelativeVigorIndexIndicatorConfig::default(ctx.clone()),
+    );
+    let mut rvgi_strategy = RelativeVigorIndexStrategy::new(ctx.clone());
+    let mut rvgi_fb = RelativeVigorIndexFeatureBuilder::new(ctx.clone());
+
     for cctx in ctx {
         let ctx = cctx.get();
 
@@ -326,11 +338,16 @@ pub fn generate_ml_dataset(ctx: ComponentContext, path: &Path) {
         // );
         // combined.push(dmi_feat.to_box());
 
-        let po = po_indicator.next();
-        let po_trade = po_strategy.next(po);
-        let po_feat =
-            FeatureNamespace::new("po", po_fb.next(po, po_trade, &po_strategy.config).to_box());
-        combined.push(po_feat.to_box());
+        // let po = po_indicator.next();
+        // let po_trade = po_strategy.next(po);
+        // let po_feat =
+        //     FeatureNamespace::new("po", po_fb.next(po, po_trade, &po_strategy.config).to_box());
+        // combined.push(po_feat.to_box());
+
+        let rvgi = rvgi_indicator.next();
+        let rvgi_trade = rvgi_strategy.next(&rvgi);
+        let rvgi_feat = FeatureNamespace::new("rvgi", rvgi_fb.next(&rvgi, rvgi_trade).to_box());
+        combined.push(rvgi_feat.to_box());
 
         combined.push(asset_fb.next().to_box());
         composer.push(combined.to_box());

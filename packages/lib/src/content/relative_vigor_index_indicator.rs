@@ -31,6 +31,9 @@ pub struct RelativeVigorIndexIndicator {
     swma_sig: SymmetricallyWeightedMovingAverageComponent,
 }
 
+pub static RELATIVE_VIGOR_INDEX_MIN_VALUE: f64 = -1.0;
+pub static RELATIVE_VIGOR_INDEX_MAX_VALUE: f64 = 1.0;
+
 impl RelativeVigorIndexIndicator {
     pub fn new(ctx: ComponentContext, config: RelativeVigorIndexIndicatorConfig) -> Self {
         return RelativeVigorIndexIndicator {
