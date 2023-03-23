@@ -1,4 +1,6 @@
 [workspace]
 members = [
-    "packages/lib",
+    "pace",
+    "benchmarks/pace",
+    "example"
 ]
