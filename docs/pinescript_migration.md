@@ -2,7 +2,11 @@
 
 ## ChatGPT
 
-> Note: This is a work in progress. GPT may not be able to translate all PineScript code to Pace and give wrong code. Use this with caution.
+This is a work in progress. GPT may not be able to translate all PineScript code to Pace and give wrong code. Use this with caution.
+
+> Note: GPT-4 has a maximum context size of 8192 tokens. If you exceed this limit, GPT may make mistakes and halucinate.
+>
+> Use [tokenizer counter](https://platform.openai.com/tokenizer), if you are not sure.
 
 You can use GPT-4 to directly translate PineScript code to Pace.
 
