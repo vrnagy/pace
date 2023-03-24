@@ -49,22 +49,27 @@ impl Bar {
         return self.index.get() >= length - 1;
     }
 
+    /// Same as PineScript `open`.
     pub fn open(&self) -> Option<f64> {
         return self.data.get_open(self.index.get());
     }
 
+    /// Same as PineScript `high`.
     pub fn high(&self) -> Option<f64> {
         return self.data.get_high(self.index.get());
     }
 
+    /// Same as PineScript `low`.
     pub fn low(&self) -> Option<f64> {
         return self.data.get_low(self.index.get());
     }
 
+    /// Same as PineScript `close`.
     pub fn close(&self) -> Option<f64> {
         return self.data.get_close(self.index.get());
     }
 
+    /// Same as PineScript `volume`.
     pub fn volume(&self) -> Option<f64> {
         return self.data.get_volume(self.index.get());
     }

@@ -2,6 +2,7 @@ use super::context::Context;
 
 /// Recursive building block that accepts an input and produces an output imlicitly.
 pub trait Incremental<T, R> {
+    /// It is recommended that `next` method is called on every tick, even if the input is `None`.
     fn next(&mut self, input: T) -> R;
 
     fn to_box(self) -> Box<Self>
