@@ -25,4 +25,3 @@ mimalloc = { version = "0.1.34", default-features = true }
 rand = "0.8.5"
 prettytable-rs = "^0.10"
 textplots = "0.8"
-plotters = "0.3.4"
